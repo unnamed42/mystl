@@ -26,11 +26,11 @@ template <class T> using add_volatile_t = typename add_volatile<T>::type;
 
 template <class T> struct is_const          : false_type {};
 template <class T> struct is_const<const T> : true_type  {};
-template <class T> using  is_const_v = is_const<T>::value;
+template <class T> constexpr inline bool is_const_v = is_const<T>::value;
 
 template <class T> struct is_volatile             : false_type {};
 template <class T> struct is_volatile<volatile T> : true_type  {};
-template <class T> using  is_volatile_v = is_volatile<T>::value;
+template <class T> constexpr inline bool is_volatile_v = is_volatile<T>::value;
 
 } // namespace rubbish
 

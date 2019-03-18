@@ -35,19 +35,19 @@ template <class T> using  add_rvalue_reference_t = typename add_rvalue_reference
 
 template <class T> struct is_reference     : false_type {};
 template <class T> struct is_reference<T&> : true_type  {};
-template <class T> using  is_reference_t = is_reference<T>::value;
+template <class T> constexpr inline bool is_reference_v = is_reference<T>::value;
 
 template <class T> struct is_rvalue_reference      : false_type {};
 template <class T> struct is_rvalue_reference<T&&> : true_type  {};
-template <class T> using  is_rvalue_reference_t = is_rvalue_reference<T>::value;
+template <class T> constexpr inline bool is_rvalue_reference_v = is_rvalue_reference<T>::value;
 
 template <class T> struct is_pointer     : false_type {};
 template <class T> struct is_pointer<T*> : true_type  {};
-template <class T> using  is_pointer_v = is_pointer<T>::value;
+template <class T> constexpr inline bool is_pointer_v = is_pointer<T>::value;
 
 template <class T> struct is_array                 : false_type {};
 template <class T, size_t N> struct is_array<T[N]> : true_type  {};
-template <class T> using  is_array_v = is_array<T>::value;
+template <class T> constexpr inline bool is_array_v = is_array<T>::value;
 
 } // namespace rubbish
 
