@@ -1,22 +1,20 @@
-#ifndef RANGE_ACCESS
-#define RANGE_ACCESS
+#ifndef CRTP_RANGE_ACCESS
+#define CRTP_RANGE_ACCESS
 
 #include "iterator/const_iterator.hpp"
 #include "iterator/reverse_iterator.hpp"
 
 namespace rubbish {
 
-template <class Derived>
+template <class Derived, class Iterator>
 class range_access {
 private:
-    using iterator         = typename Derived::iterator;
-    using const_iterator   = rubbish::const_iterator<iterator>;
-    using reverse_iterator = rubbish::reverse_iterator<iterator>;
-
+    using const_iterator   = rubbish::const_iterator<Iterator>;
+    using reverse_iterator = rubbish::reverse_iterator<Iterator>;
     using const_reverse_iterator = rubbish::const_iterator<reverse_iterator>;
 
-    static       Derived& derived()       noexcept { return *static_cast<Derived*>(this); }
-    static const Derived& derived() const noexcept { return *static_cast<const Derived*>(this); }
+          Derived& derived()       noexcept { return *static_cast<Derived*>(this); }
+    const Derived& derived() const noexcept { return *static_cast<const Derived*>(this); }
 public:
     const_iterator cbegin() const { return const_iterator{derived().begin()}; }
     const_iterator cend()   const { return const_iterator{derived().end()}; }
@@ -30,4 +28,4 @@ public:
 
 } // namespace rubbish
 
-#endif // RANGE_ACCESS
+#endif // CRTP_RANGE_ACCESS
