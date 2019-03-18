@@ -5,6 +5,8 @@
 #include "meta/base.hpp"
 #include "meta/cv.hpp"
 
+#include "meta/is_function.hpp"
+
 namespace rubbish {
 
 namespace detail {
@@ -49,42 +51,6 @@ template <template <class...> class Template, class ...Args>
 struct is_instance_of<Template<Args...>, Template> : true_type {};
 template <class T, template <class...> class Template>
 constexpr inline bool is_instance_of_v = is_instance_of<T, Template>::value;
-
-template <class T> struct is_function : false_type {};
-#define IS_FUNCTION_NORMAL(variant) \
-    template <class Ret, class ...Args> struct is_function<Ret(Args...) variant> : true_type {}
-#define IS_FUNCTION_VAARGS(variant) \
-    template <class Ret, class ...Args> struct is_function<Ret(Args..., ...) variant> : true_type {}
-
-    IS_FUNCTION_NORMAL();
-    IS_FUNCTION_NORMAL(const);
-    IS_FUNCTION_NORMAL(volatile);
-    IS_FUNCTION_NORMAL(const volatile);
-    IS_FUNCTION_NORMAL(&);
-    IS_FUNCTION_NORMAL(const &);
-    IS_FUNCTION_NORMAL(volatile &);
-    IS_FUNCTION_NORMAL(const volatile &);
-    IS_FUNCTION_NORMAL(&&);
-    IS_FUNCTION_NORMAL(const &&);
-    IS_FUNCTION_NORMAL(volatile &&);
-    IS_FUNCTION_NORMAL(const volatile &&);
-    IS_FUNCTION_VAARGS();
-    IS_FUNCTION_VAARGS(const);
-    IS_FUNCTION_VAARGS(volatile);
-    IS_FUNCTION_VAARGS(const volatile);
-    IS_FUNCTION_VAARGS(&);
-    IS_FUNCTION_VAARGS(const &);
-    IS_FUNCTION_VAARGS(volatile &);
-    IS_FUNCTION_VAARGS(const volatile &);
-    IS_FUNCTION_VAARGS(&&);
-    IS_FUNCTION_VAARGS(const &&);
-    IS_FUNCTION_VAARGS(volatile &&);
-    IS_FUNCTION_VAARGS(const volatile &&);
-
-#undef IS_FUNCTION_VAARGS
-#undef IS_FUNCTION_NORMAL
-
-template <class T> constexpr inline bool is_function_v = is_function<T>::value;
 
 } // namespace rubbish
 
