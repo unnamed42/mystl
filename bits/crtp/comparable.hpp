@@ -48,17 +48,17 @@ public:
 };
 
 template <class T, class Compared>
-enable_if_t<!is_same_v<T, Compared>, bool> operator<(const Compared &com, const Comparable<T, Compared> &obj) { return obj > com; }
+enable_if_t<!is_same_v<T, Compared>, bool> operator<(const Compared &com, const comparable<T, Compared> &obj) { return obj > com; }
 template <class T, class Compared>
-enable_if_t<!is_same_v<T, Compared>, bool> operator>(const Compared &com, const Comparable<T, Compared> &obj) { return obj < com; }
+enable_if_t<!is_same_v<T, Compared>, bool> operator>(const Compared &com, const comparable<T, Compared> &obj) { return obj < com; }
 template <class T, class Compared>
-enable_if_t<!is_same_v<T, Compared>, bool> operator==(const Compared &com, const Comparable<T, Compared> &obj) { return obj == com; }
+enable_if_t<!is_same_v<T, Compared>, bool> operator==(const Compared &com, const comparable<T, Compared> &obj) { return obj == com; }
 template <class T, class Compared>
-enable_if_t<!is_same_v<T, Compared>, bool> operator!=(const Compared &com, const Comparable<T, Compared> &obj) { return !(obj == com); }
+enable_if_t<!is_same_v<T, Compared>, bool> operator!=(const Compared &com, const comparable<T, Compared> &obj) { return !(obj == com); }
 template <class T, class Compared>
-enable_if_t<!is_same_v<T, Compared>, bool> operator<=(const Compared &com, const Comparable<T, Compared> &obj) { return !(com > obj); }
+enable_if_t<!is_same_v<T, Compared>, bool> operator<=(const Compared &com, const comparable<T, Compared> &obj) { return !(com > obj); }
 template <class T, class Compared>
-enable_if_t<!is_same_v<T, Compared>, bool> operator>=(const Compared &com, const Comparable<T, Compared> &obj) { return !(com < obj); }
+enable_if_t<!is_same_v<T, Compared>, bool> operator>=(const Compared &com, const comparable<T, Compared> &obj) { return !(com < obj); }
 
 } // namespace rubbish
 

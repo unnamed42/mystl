@@ -30,7 +30,9 @@ template <class T> using  add_pointer_t = typename add_pointer<T>::type;
 template <class T> struct add_reference { using type = T&; };
 template <class T> using  add_reference_t = typename add_reference<T>::type;
 
-template <class T> struct add_rvalue_reference { using type = T&&; };
+template <class T> struct add_rvalue_reference      { using type = T&&; };
+template <class T> struct add_rvalue_reference<T&>  { using type = T&; };
+template <class T> struct add_rvalue_reference<T&&> { using type = T&&; };
 template <class T> using  add_rvalue_reference_t = typename add_rvalue_reference<T>::type;
 
 template <class T> struct is_reference     : false_type {};
