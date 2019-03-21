@@ -3,7 +3,7 @@
 
 #include "meta/ref.hpp"
 
-namespace rubbish {
+namespace stl {
 
 template <class T>
 constexpr remove_reference_t<T>&& move(T &&t) noexcept {
@@ -20,9 +20,6 @@ constexpr T&& forward(remove_reference_t<T> &&arg) noexcept {
     return static_cast<T&&>(arg);
 }
 
-template <class T>
-add_rvalue_reference_t<T> declval() noexcept;
-
-} // namespace rubbish
+} // namespace stl
 
 #endif // UTILITY_FORWARD

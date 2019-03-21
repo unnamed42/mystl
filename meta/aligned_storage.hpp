@@ -3,18 +3,18 @@
 
 #include "def.hpp"
 
-namespace rubbish {
+namespace stl {
 
-template <size_t Size, size_t Align>
+template <stl::size_t Size, stl::size_t Align>
 struct aligned_storage {
     struct type {
         alignas(Align) unsigned char data[Size];
     };
 };
 
-template <size_t Size, size_t Align>
+template <stl::size_t Size, stl::size_t Align>
 using aligned_storage_t = typename aligned_storage<Size, Align>::type;
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // META_ALIGNED_STORAGE

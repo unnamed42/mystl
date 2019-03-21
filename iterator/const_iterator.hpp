@@ -5,13 +5,13 @@
 #include "meta/ref.hpp"
 #include "iterator/iterator_traits.hpp"
 
-namespace rubbish {
+namespace stl {
 
 template <class Iterator>
 class const_iterator {
 private:
-    using traits_t = iterator_traits<Iterator>;
-    using self_t   = const_iterator<Iterator>;
+    using traits_t = stl::iterator_traits<Iterator>;
+    using self_t   = stl::const_iterator<Iterator>;
 public:
     using value_type        = typename traits_t::value_type;
     using pointer           = const remove_pointer_t<typename traits_t::pointer>*;
@@ -43,32 +43,32 @@ public:
 };
 
 template <class IterL, class IterR>
-inline bool operator<(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
+inline bool operator<(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator>(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return rhs < lhs; }
+inline bool operator>(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return rhs < lhs; }
 template <class IterL, class IterR>
-inline bool operator<=(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return !(lhs > rhs); }
+inline bool operator<=(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return !(lhs > rhs); }
 template <class IterL, class IterR>
-inline bool operator>=(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return !(lhs < rhs); }
+inline bool operator>=(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return !(lhs < rhs); }
 template <class IterL, class IterR>
-inline bool operator==(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
+inline bool operator==(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator!=(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return !(lhs == rhs); }
+inline bool operator!=(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return !(lhs == rhs); }
 
-// Make const_iterator and underlying iterator co-operable
-template <class Iter> inline bool operator<(const Iter &lhs, const const_iterator<Iter> &rhs) { return lhs < rhs.base(); }
-template <class Iter> inline bool operator>(const Iter &lhs, const const_iterator<Iter> &rhs) { return lhs > rhs.base(); }
-template <class Iter> inline bool operator<=(const Iter &lhs, const const_iterator<Iter> &rhs) { return !(lhs > rhs); }
-template <class Iter> inline bool operator>=(const Iter &lhs, const const_iterator<Iter> &rhs) { return !(lhs < rhs); }
-template <class Iter> inline bool operator==(const Iter &lhs, const const_iterator<Iter> &rhs) { return lhs == rhs.base(); }
-template <class Iter> inline bool operator!=(const Iter &lhs, const const_iterator<Iter> &rhs) { return !(lhs == rhs); }
-template <class Iter> inline bool operator<(const const_iterator<Iter> &lhs, const Iter &rhs) { return rhs > lhs; }
-template <class Iter> inline bool operator>(const const_iterator<Iter> &lhs, const Iter &rhs) { return rhs < lhs; }
-template <class Iter> inline bool operator<=(const const_iterator<Iter> &lhs, const Iter &rhs) { return rhs >= lhs; }
-template <class Iter> inline bool operator>=(const const_iterator<Iter> &lhs, const Iter &rhs) { return rhs <= lhs; }
-template <class Iter> inline bool operator==(const const_iterator<Iter> &lhs, const Iter &rhs) { return rhs == lhs; }
-template <class Iter> inline bool operator!=(const const_iterator<Iter> &lhs, const Iter &rhs) { return rhs != lhs; }
+// Make stl::const_iterator and underlying iterator co-operable
+template <class Iter> inline bool operator<(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return lhs < rhs.base(); }
+template <class Iter> inline bool operator>(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return lhs > rhs.base(); }
+template <class Iter> inline bool operator<=(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return !(lhs > rhs); }
+template <class Iter> inline bool operator>=(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return !(lhs < rhs); }
+template <class Iter> inline bool operator==(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return lhs == rhs.base(); }
+template <class Iter> inline bool operator!=(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return !(lhs == rhs); }
+template <class Iter> inline bool operator<(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs > lhs; }
+template <class Iter> inline bool operator>(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs < lhs; }
+template <class Iter> inline bool operator<=(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs >= lhs; }
+template <class Iter> inline bool operator>=(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs <= lhs; }
+template <class Iter> inline bool operator==(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs == lhs; }
+template <class Iter> inline bool operator!=(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs != lhs; }
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // ITERATOR_CONST_ITERATOR

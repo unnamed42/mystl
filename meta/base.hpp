@@ -1,7 +1,7 @@
 #ifndef META_BASE
 #define META_BASE
 
-namespace rubbish {
+namespace stl {
 
 template <class T, T t>
 struct constant { static constexpr auto value = t; };
@@ -17,6 +17,6 @@ namespace detail {
                   "yes_t and no_t requires a different size");
 } // namespace detail
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // META_BASE

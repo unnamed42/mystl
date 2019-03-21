@@ -3,7 +3,7 @@
 
 #include "def.hpp"
 
-namespace rubbish {
+namespace stl {
 
 class iterator_core_access {
     template <class D, class V, class R, class P, class Diff> friend class iterator_facade;
@@ -32,7 +32,7 @@ public:
     using pointer         = P;
     using difference_type = D;
 private:
-    using access = iterator_core_access;
+    using access = stl::iterator_core_access;
 public:
     reference operator*()  { return access::deref(derived()); }
     pointer   operator->() { return &operator*(); }
@@ -48,6 +48,6 @@ public:
     Derived  operator- (difference_type diff) const { auto copy = derived(); access::advance(copy, -diff); return copy; }
 };
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // CRTP_ITERATOR_FACADE

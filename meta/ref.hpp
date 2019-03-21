@@ -5,11 +5,11 @@
 
 // meta function for pointers, references, raw arrays
 
-namespace rubbish {
+namespace stl {
 
-template <class T> struct remove_extent                 { using type = T; };
-template <class T> struct remove_extent<T[]>            { using type = T; };
-template <class T, size_t N> struct remove_extent<T[N]> { using type = T; };
+template <class T> struct remove_extent                      { using type = T; };
+template <class T> struct remove_extent<T[]>                 { using type = T; };
+template <class T, stl::size_t N> struct remove_extent<T[N]> { using type = T; };
 template <class T> using  remove_extent_t = typename remove_extent<T>::type;
 
 template <class T> struct remove_reference      { using type = T; };
@@ -47,10 +47,10 @@ template <class T> struct is_pointer     : false_type {};
 template <class T> struct is_pointer<T*> : true_type  {};
 template <class T> constexpr inline bool is_pointer_v = is_pointer<T>::value;
 
-template <class T> struct is_array                 : false_type {};
-template <class T, size_t N> struct is_array<T[N]> : true_type  {};
+template <class T> struct is_array                      : false_type {};
+template <class T, stl::size_t N> struct is_array<T[N]> : true_type  {};
 template <class T> constexpr inline bool is_array_v = is_array<T>::value;
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // META_REF

@@ -1,1 +1,7 @@
 backup/
+build/
+.ccls
+main.cpp
+CMakeLists.txt
+mystl.kdev4
+.kdev4

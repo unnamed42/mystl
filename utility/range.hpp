@@ -6,15 +6,15 @@
 #include "crtp/comparable.hpp"
 #include "crtp/iterator_facade.hpp"
 
-namespace rubbish {
+namespace stl {
 
 namespace detail {
     struct range_sentinel {};
 } // namespace detail
 
 template <class T>
-class range_iterator : public iterator_facade<range_iterator<T>, T>,
-                              comparable<range_iterator<T>, range_iterator<T>> {
+class range_iterator : public stl::iterator_facade<range_iterator<T>, T>,
+                              stl::comparable<range_iterator<T>, range_iterator<T>> {
     friend class comparable_access;
     friend class iterator_core_access;
 private:
@@ -42,10 +42,10 @@ public:
 };
 
 template <class T>
-range_iterator<remove_reference_t<T>> range(T &&first, T &&last) {
-    return { forward<T>(first), forward<T>(last) };
+range_iterator<stl::remove_reference_t<T>> range(T &&first, T &&last) {
+    return { stl::forward<T>(first), stl::forward<T>(last) };
 }
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // UTILITY_RANGE

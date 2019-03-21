@@ -3,13 +3,13 @@
 
 #include "iterator/iterator_traits.hpp"
 
-namespace rubbish {
+namespace stl {
 
 template <class Iterator>
 class reverse_iterator {
 private:
-    using traits_t = iterator_traits<Iterator>;
-    using self_t   = reverse_iterator<Iterator>;
+    using traits_t = stl::iterator_traits<Iterator>;
+    using self_t   = stl::reverse_iterator<Iterator>;
 public:
     using value_type        = typename traits_t::value_type;
     using pointer           = typename traits_t::pointer;
@@ -41,18 +41,18 @@ public:
 };
 
 template <class IterL, class IterR>
-inline bool operator<(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
+inline bool operator<(const stl::reverse_iterator<IterL> &lhs, const stl::reverse_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator>(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return rhs < lhs; }
+inline bool operator>(const stl::reverse_iterator<IterL> &lhs, const stl::reverse_iterator<IterR> &rhs) { return rhs < lhs; }
 template <class IterL, class IterR>
-inline bool operator<=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs > rhs); }
+inline bool operator<=(const stl::reverse_iterator<IterL> &lhs, const stl::reverse_iterator<IterR> &rhs) { return !(lhs > rhs); }
 template <class IterL, class IterR>
-inline bool operator>=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs < rhs); }
+inline bool operator>=(const stl::reverse_iterator<IterL> &lhs, const stl::reverse_iterator<IterR> &rhs) { return !(lhs < rhs); }
 template <class IterL, class IterR>
-inline bool operator==(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
+inline bool operator==(const stl::reverse_iterator<IterL> &lhs, const stl::reverse_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator!=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs == rhs); }
+inline bool operator!=(const stl::reverse_iterator<IterL> &lhs, const stl::reverse_iterator<IterR> &rhs) { return !(lhs == rhs); }
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // ITERATOR_REVERSE_ITERATOR

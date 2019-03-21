@@ -3,7 +3,7 @@
 
 #include "utility/forward.hpp"
 
-namespace rubbish {
+namespace stl {
 
 template <class T>
 void swap(T &t1, T &t2) {
@@ -12,6 +12,6 @@ void swap(T &t1, T &t2) {
     t2 = move(tmp);
 }
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // UTILITY_SWAP

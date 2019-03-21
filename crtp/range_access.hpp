@@ -4,14 +4,14 @@
 #include "iterator/const_iterator.hpp"
 #include "iterator/reverse_iterator.hpp"
 
-namespace rubbish {
+namespace stl {
 
 template <class Derived, class Iterator>
 class range_access {
 private:
-    using const_iterator   = rubbish::const_iterator<Iterator>;
-    using reverse_iterator = rubbish::reverse_iterator<Iterator>;
-    using const_reverse_iterator = rubbish::const_iterator<reverse_iterator>;
+    using const_iterator   = stl::const_iterator<Iterator>;
+    using reverse_iterator = stl::reverse_iterator<Iterator>;
+    using const_reverse_iterator = stl::const_iterator<reverse_iterator>;
 
           Derived& derived()       noexcept { return *static_cast<Derived*>(this); }
     const Derived& derived() const noexcept { return *static_cast<const Derived*>(this); }
@@ -26,6 +26,6 @@ public:
     const_reverse_iterator crend()   const { return const_iterator{rend}; }
 };
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // CRTP_RANGE_ACCESS

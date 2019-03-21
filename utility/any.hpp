@@ -1,4 +1,10 @@
-namespace rubbish {
+#ifndef UTILITY_ANY
+#define UTILITY_ANY
+
+#include "meta/ref.hpp"
+#include "utility/forward.hpp"
+
+namespace stl {
 
 namespace detail {
 
@@ -41,8 +47,8 @@ public:
 
     template <class T>
     any(T &&t)
-        : p(new actual_data<remove_reference_t<T>>(forward<T>(t))),
-          id(detail::type_id<remove_reference_t<T>>()) {}
+        : p(new actual_data<stl::remove_reference_t<T>>(stl::forward<T>(t))),
+          id(detail::type_id<stl::remove_reference_t<T>>()) {}
 
     ~any() { delete p; }
 };
@@ -56,4 +62,6 @@ T& any_cast(any &a) {
         throw bad_any_cast{};
 }
 
-} // namespace rubbish
+} // namespace stl
+
+#endif // UTILITY_ANY

@@ -3,7 +3,7 @@
 
 #include "def.hpp"
 
-namespace rubbish {
+namespace stl {
 
 struct random_access_iterator_tag {};
 struct bidirectional_iterator_tag {};
@@ -36,6 +36,6 @@ struct iterator_traits<const T*> {
     using iterator_category = random_access_iterator_tag;
 };
 
-} // namespace rubbish
+} // namespace stl
 
 #endif // ITERATOR_ITERATOR_TRAITS
