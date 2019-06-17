@@ -1,10 +1,9 @@
 #ifndef UTILITY_TUPLE
 #define UTILITY_TUPLE
 
-#include "meta/ref.hpp"
+#include "meta/cvref.hpp"
 #include "meta/check.hpp"
 #include "meta/sfinae.hpp"
-#include "meta/index_sequence.hpp"
 #include "meta/constructible.hpp"
 
 #include "utility/swap.hpp"
@@ -16,6 +15,8 @@
 #include <type_traits>
 
 namespace stl {
+
+template <class...> struct tuple;
 
 namespace detail {
 
@@ -113,8 +114,6 @@ namespace detail {
     };
 
 } // namespace detail
-
-template <class...> struct tuple;
 
 } // namespace stl
 
