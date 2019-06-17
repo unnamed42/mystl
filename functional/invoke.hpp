@@ -1,7 +1,6 @@
 #ifndef FUNCTIONAL_INVOKE
 #define FUNCTIONAL_INVOKE
 
-#include "meta/ref.hpp"
 #include "meta/decay.hpp"
 #include "meta/check.hpp"
 #include "meta/is_member_pointer.hpp"

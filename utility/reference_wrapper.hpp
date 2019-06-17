@@ -1,8 +1,7 @@
 #ifndef UTILITY_REFERENCE_WRAPPER
 #define UTILITY_REFERENCE_WRAPPER
 
-#include "meta/cv.hpp"
-#include "meta/ref.hpp"
+#include "meta/cvref.hpp"
 #include "meta/check.hpp"
 #include "meta/sfinae.hpp"
 
@@ -30,7 +29,7 @@ public:
     // constructor, copy
     template <class U, class = decltype(
         detail::fun<T>(declval<U>()),
-        enable_if_t<!is_same_v<reference_wrapper, remove_cv_t<remove_reference_t<U>> > >{}
+        enable_if_t< !is_same_v<reference_wrapper, remove_cvref_t<U>> >{}
     )>
     reference_wrapper(U &&u) noexcept(noexcept(detail::fun<T>(forward<U>(u))))
         : p(addressof(detail::fun<T>(forward<U>(u)))) {}

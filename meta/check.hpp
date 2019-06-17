@@ -2,8 +2,9 @@
 #define META_CHECK
 
 #include "def.hpp"
+
 #include "meta/base.hpp"
-#include "meta/cv.hpp"
+#include "meta/cvref.hpp"
 
 namespace stl {
 
@@ -63,6 +64,40 @@ template <template <class...> class Template, class ...Args>
 struct is_instance_of<Template<Args...>, Template> : true_type {};
 template <class T, template <class...> class Template>
 constexpr inline bool is_instance_of_v = is_instance_of<T, Template>::value;
+
+template <class T> struct is_reference      : false_type {};
+template <class T> struct is_reference<T&>  : true_type  {};
+template <class T> struct is_reference<T&&> : true_type  {};
+template <class T> constexpr inline bool is_reference_v = is_reference<T>::value;
+
+template <class T> struct is_lvalue_reference     : false_type {};
+template <class T> struct is_lvalue_reference<T&> : true_type  {};
+template <class T> constexpr inline bool is_lvalue_reference_v = is_lvalue_reference<T>::value;
+
+template <class T> struct is_rvalue_reference      : false_type {};
+template <class T> struct is_rvalue_reference<T&&> : true_type  {};
+template <class T> constexpr inline bool is_rvalue_reference_v = is_rvalue_reference<T>::value;
+
+template <class T> class reference_wrapper;
+template <class T> struct is_reference_wrapper                       : false_type {};
+template <class T> struct is_reference_wrapper<reference_wrapper<T>> : true_type {};
+template <class T> constexpr inline bool is_reference_wrapper_v = is_reference_wrapper<T>::value;
+
+template <class T> struct is_pointer     : false_type {};
+template <class T> struct is_pointer<T*> : true_type  {};
+template <class T> constexpr inline bool is_pointer_v = is_pointer<T>::value;
+
+template <class T> struct is_array                      : false_type {};
+template <class T, size_t N> struct is_array<T[N]> : true_type  {};
+template <class T> constexpr inline bool is_array_v = is_array<T>::value;
+
+template <class T> struct is_const          : false_type {};
+template <class T> struct is_const<const T> : true_type  {};
+template <class T> constexpr inline bool is_const_v = is_const<T>::value;
+
+template <class T> struct is_volatile             : false_type {};
+template <class T> struct is_volatile<volatile T> : true_type  {};
+template <class T> constexpr inline bool is_volatile_v = is_volatile<T>::value;
 
 } // namespace stl
 

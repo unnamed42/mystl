@@ -1,7 +1,6 @@
 #ifndef FUNCTIONAL_INVOKE_RESULT
 #define FUNCTIONAL_INVOKE_RESULT
 
-#include "meta/ref.hpp"
 #include "meta/check.hpp"
 #include "meta/decay.hpp"
 #include "meta/sfinae.hpp"

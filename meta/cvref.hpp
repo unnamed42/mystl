@@ -1,13 +1,30 @@
-#ifndef META_REF
-#define META_REF
+#ifndef META_CVREF
+#define META_CVREF
 
 #include "def.hpp"
 
-#include "meta/base.hpp"
-
-// meta function for pointers, references, raw arrays
-
 namespace stl {
+
+template <class T> struct remove_const          { using type = T; };
+template <class T> struct remove_const<const T> { using type = T; };
+template <class T> using remove_const_t = typename remove_const<T>::type;
+
+template <class T> struct remove_volatile             { using type = T; };
+template <class T> struct remove_volatile<volatile T> { using type = T; };
+template <class T> using remove_volatile_t = typename remove_volatile<T>::type;
+
+template <class T> struct remove_cv {
+    using type = typename remove_volatile<
+                     typename remove_const<T>::type
+                 >::type;
+};
+template <class T> using remove_cv_t = typename remove_cv<T>::type;
+
+template <class T> struct add_const { using type = const T; };
+template <class T> using add_const_t = typename add_const<T>::type;
+
+template <class T> struct add_volatile { using type = volatile T; };
+template <class T> using add_volatile_t = typename add_volatile<T>::type;
 
 template <class T> struct remove_extent                      { using type = T; };
 template <class T> struct remove_extent<T[]>                 { using type = T; };
@@ -37,32 +54,9 @@ template <class T> struct add_rvalue_reference<T&>  { using type = T&; };
 template <class T> struct add_rvalue_reference<T&&> { using type = T&&; };
 template <class T> using  add_rvalue_reference_t = typename add_rvalue_reference<T>::type;
 
-template <class T> struct is_reference      : false_type {};
-template <class T> struct is_reference<T&>  : true_type  {};
-template <class T> struct is_reference<T&&> : true_type  {};
-template <class T> constexpr inline bool is_reference_v = is_reference<T>::value;
-
-template <class T> struct is_lvalue_reference     : false_type {};
-template <class T> struct is_lvalue_reference<T&> : true_type  {};
-template <class T> constexpr inline bool is_lvalue_reference_v = is_lvalue_reference<T>::value;
-
-template <class T> struct is_rvalue_reference      : false_type {};
-template <class T> struct is_rvalue_reference<T&&> : true_type  {};
-template <class T> constexpr inline bool is_rvalue_reference_v = is_rvalue_reference<T>::value;
-
-template <class T> class reference_wrapper;
-template <class T> struct is_reference_wrapper                       : false_type {};
-template <class T> struct is_reference_wrapper<reference_wrapper<T>> : true_type {};
-template <class T> constexpr inline bool is_reference_wrapper_v = is_reference_wrapper<T>::value;
-
-template <class T> struct is_pointer     : false_type {};
-template <class T> struct is_pointer<T*> : true_type  {};
-template <class T> constexpr inline bool is_pointer_v = is_pointer<T>::value;
-
-template <class T> struct is_array                      : false_type {};
-template <class T, size_t N> struct is_array<T[N]> : true_type  {};
-template <class T> constexpr inline bool is_array_v = is_array<T>::value;
+template <class T> struct remove_cvref { using type = remove_cv_t<remove_ref_t<T>>; };
+template <class T> using  remove_cvref_t = typename remove_cvref<T>::type;
 
 } // namespace stl
 
-#endif // META_REF
+#endif // META_CVREF

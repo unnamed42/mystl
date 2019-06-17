@@ -1,7 +1,7 @@
 #ifndef CRTP_COMPARABLE
 #define CRTP_COMPARABLE
 
-#include "meta/stl::enable_if.hpp"
+#include "meta/sfinae.hpp"
 #include "utility/forward.hpp"
 
 namespace stl {
