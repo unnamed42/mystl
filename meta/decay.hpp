@@ -1,8 +1,7 @@
 #ifndef META_DECAY
 #define META_DECAY
 
-#include "meta/cv.hpp"
-#include "meta/ref.hpp"
+#include "meta/cvref.hpp"
 #include "meta/condition.hpp"
 
 #include "concept/function.hpp"
