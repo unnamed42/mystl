@@ -6,7 +6,7 @@
 namespace stl {
 
 template <class T>
-constexpr stl::add_rvalue_reference_t<T> declval() noexcept;
+constexpr add_rvalue_reference_t<T> declval() noexcept;
 
 } // namespace stl
 

@@ -4,6 +4,7 @@
 #include "meta/cv.hpp"
 #include "meta/ref.hpp"
 #include "meta/condition.hpp"
+
 #include "concept/function.hpp"
 
 namespace stl {
@@ -11,15 +12,15 @@ namespace stl {
 template<class T>
 struct decay {
 private:
-    using U = stl::remove_reference_t<T>;
+    using U = remove_reference_t<T>;
 public:
-    using type = stl::condition_t<
-        stl::is_array_v<U>,
-        stl::remove_extent_t<U>*,
-        stl::condition_t<
-            stl::function<U>::value,
-            stl::add_pointer_t<U>,
-            stl::remove_cv_t<U>
+    using type = condition_t<
+        is_array_v<U>,
+        remove_extent_t<U>*,
+        condition_t<
+            function<U>::value,
+            add_pointer_t<U>,
+            remove_cv_t<U>
         >
     >;
 };

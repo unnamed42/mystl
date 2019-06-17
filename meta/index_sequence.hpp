@@ -3,7 +3,7 @@
 
 namespace stl {
 
-// solution from https://stackoverflow.com/a/17426611
+// log(N) complexity solution from https://stackoverflow.com/a/17426611
 
 template <unsigned...> struct index_sequence {
     using type = index_sequence;
@@ -19,12 +19,10 @@ namespace detail {
 } // namespace detail
 
 template <unsigned N>
-struct make_index_sequence {
-    using type = typename detail::numbers_concat<
-        typename make_index_sequence<N/2>::type,
-        typename make_index_sequence<N-N/2>::type
-    >::type;
-};
+struct make_index_sequence : detail::numbers_concat<
+    typename make_index_sequence<N/2>::type,
+    typename make_index_sequence<N-N/2>::type
+> {};
 
 template <> struct make_index_sequence<0> : index_sequence<> {};
 template <> struct make_index_sequence<1> : index_sequence<0> {};

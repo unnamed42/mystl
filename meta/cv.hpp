@@ -1,6 +1,8 @@
 #ifndef META_CV
 #define META_CV
 
+#include "meta/base.hpp"
+
 namespace stl {
 
 template <class T> struct remove_const          { using type = T; };

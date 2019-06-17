@@ -10,8 +10,8 @@ using true_type  = constant<bool, true>;
 using false_type = constant<bool, false>;
 
 namespace detail {
-    using yes_t = char[1];
-    using no_t  = char[2];
+    struct yes_t { char data; };
+    struct no_t  { char data[2]; };
 
     static_assert(sizeof(yes_t) != sizeof(no_t),
                   "yes_t and no_t requires a different size");

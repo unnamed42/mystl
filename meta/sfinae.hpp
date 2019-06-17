@@ -1,15 +1,15 @@
 #ifndef META_SFINAE
 #define META_SFINAE
 
-#include "meta/condition.hpp"
+#include "meta/logic.hpp"
 
 namespace stl {
 
 template <class...>
-struct make_void { using type = void; };
+struct void_type { using type = void; };
 
 template <class ...Args>
-using void_t = typename make_void<Args...>::type;
+using void_t = typename void_type<Args...>::type;
 
 template <bool B, class T = void>
 struct enable_if {  };
@@ -22,7 +22,7 @@ using enable_if_t = typename enable_if<B, T>::type;
 
 template <class ...Args>
 using satisfied = typename enable_if<
-    stl::and_<Args...>::value
+    and_<Args...>::value
 >::type;
 
 namespace detail {

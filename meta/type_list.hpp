@@ -2,6 +2,7 @@
 #define META_TYPE_LIST
 
 #include "meta/condition.hpp"
+#include "meta/variadic_concat.hpp"
 
 namespace stl {
 
@@ -42,16 +43,6 @@ struct type_list_length<type_list<T, N>> {
     static constexpr auto value = 1 + type_list_length<N>::value;
 };
 
-namespace detail {
-    template <class A, class B>
-    struct variadic_concat {};
-
-    template <template <class...> class Variadic, class ...Args1, class ...Args2>
-    struct variadic_concat<Variadic<Args1...>, Variadic<Args2...>> {
-        using type = Variadic<Args1..., Args2...>;
-    };
-} // namespace detail
-
 template <class...>
 struct type_list_flatten {};
 
@@ -65,41 +56,43 @@ struct type_list_flatten<type_list<T, N>> {
 private:
     using rest = typename type_list_flatten<N>::type;
 public:
-    using type = typename detail::variadic_concat<type_list_flatten<T>, rest>::type;
+    using type = typename variadic_concat<type_list_flatten<T>, rest>::type;
 };
 
 template <class List>
 using type_list_flatten_t = typename type_list_flatten<List>::type;
 
-template <class List, template <class> class PropertyExtractor>
-struct type_list_max_type {};
-
-template <class T, template <class> class PE>
-struct type_list_max_type<type_list<T, null_type>, PE> {
-    using type = T;
-};
-
-template <class T, class N, template <class> class PE>
-struct type_list_max_type<type_list<T, N>, PE> {
-private:
-    using rest = typename type_list_max_type<N, PE>::type;
-public:
-    using type = stl::condition_t<(PE<T>::value > PE<rest>::value), T, rest>;
-};
-
 namespace detail {
+
+    template <class List, template <class> class PropertyExtractor>
+    struct type_list_max_type {};
+
+    template <class T, template <class> class PE>
+    struct type_list_max_type<type_list<T, null_type>, PE> {
+        using type = T;
+    };
+
+    template <class T, class N, template <class> class PE>
+    struct type_list_max_type<type_list<T, N>, PE> {
+    private:
+        using rest = typename type_list_max_type<N, PE>::type;
+    public:
+        using type = condition_t<(PE<T>::value > PE<rest>::value), T, rest>;
+    };
+
     template <class T>
     struct size_of { static constexpr auto value = sizeof(T); };
 
     template <class T>
     struct align_of { static constexpr auto value = alignof(T); };
+
 } // namespace detail
 
 template <class List>
-using type_list_max_size_type = type_list_max_type<List, detail::size_of>;
+using type_list_size_max_t = typename detail::type_list_max_type<List, detail::size_of>::type;
 
 template <class List>
-using type_list_max_align_type = type_list_max_type<List, detail::align_of>;
+using type_list_align_max_t = typename detail::type_list_max_type<List, detail::align_of>::type;
 
 } // namespace stl
 

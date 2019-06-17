@@ -8,10 +8,10 @@ namespace stl {
 
 template <class ...Args> struct common_type {};
 
-template <class T> struct common_type<T> { using type = stl::decay_t<T>; };
+template <class T> struct common_type<T> { using type = decay_t<T>; };
 
 template <class T> struct common_type<T> {
-    using type = decay_t<decltype(1 ? stl::declval<T>() : stl::declval<U>())>;
+    using type = decay_t<decltype(1 ? declval<T>() : declval<U>())>;
 };
 
 template <class T, class U, class... V> struct common_type<T, U, V...> {

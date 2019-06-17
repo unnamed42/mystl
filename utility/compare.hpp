@@ -14,10 +14,10 @@ namespace detail {
     using use_substract = decltype(declval<T>() - declval<U>());
 
     template <class T, class U>
-    constexpr inline bool can_compare = stl::is_detected_v<use_compare, T, U>;
+    constexpr inline bool can_compare = is_detected_v<use_compare, T, U>;
 
     template <class T, class U>
-    constexpr inline bool can_substract = stl::is_detected_v<use_substract, T, U>;
+    constexpr inline bool can_substract = is_detected_v<use_substract, T, U>;
 } // namespace detail
 
 template <class T1, class T2>
