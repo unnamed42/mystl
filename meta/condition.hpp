@@ -6,10 +6,10 @@
 namespace stl {
 
 template <bool B, class T, class F>
-struct condition { using type = T; };
+struct condition : identity<T> {};
 
 template <class T, class F>
-struct condition<false, T, F> { using type = F; };
+struct condition<false, T, F> : identity<F> {};
 
 template <bool B, class T, class F>
 using condition_t = typename condition<B, T, F>::type;

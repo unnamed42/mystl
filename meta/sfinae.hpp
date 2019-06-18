@@ -1,12 +1,13 @@
 #ifndef META_SFINAE
 #define META_SFINAE
 
+#include "meta/base.hpp"
 #include "meta/logic.hpp"
 
 namespace stl {
 
 template <class...>
-struct void_type { using type = void; };
+struct void_type : identity<void> {};
 
 template <class ...Args>
 using void_t = typename void_type<Args...>::type;
@@ -15,7 +16,7 @@ template <bool B, class T = void>
 struct enable_if {  };
 
 template <class T>
-struct enable_if<true, T> { using type = T; };
+struct enable_if<true, T> : identity<T> {};
 
 template <bool B, class T = void>
 using enable_if_t = typename enable_if<B, T>::type;

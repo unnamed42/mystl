@@ -11,28 +11,36 @@ namespace stl {
 namespace detail {
     // from https://stackoverflow.com/a/2913870
     template <class B, class D>
-    struct is_base_of_impl {
+    struct is_base_of_h {
         operator B*() const;
         operator D*();
 
         template <class T>
-        static yes_t test(D*, T);
+        static true_type  test(D*, T);
 
-        static no_t  test(B*, int);
+        static false_type test(B*, int);
     };
 
-    struct is_class_impl {
+    template <class B, class D>
+    struct is_base_of
+        : decltype(is_base_of_h<B, D>::test(is_base_of_h<B, D>{}, int{})) {};
+
+    struct is_class_h {
         template <class T>
-        static yes_t test(int T::*);
+        static true_type  test(int T::*);
 
-        static no_t  test(...);
+        static false_type test(...);
     };
-
-    template <bool, class T>
-    struct is_empty_impl : T { unsigned long long data; };
 
     template <class T>
-    struct is_empty_impl<false, T> { unsigned long long data; };
+    struct is_class : decltype(is_class_h::test(0)) {};
+
+    template <bool, class T>
+    struct is_empty_h : T { unsigned long long data; };
+
+    template <class T>
+    struct is_empty_h<false, T> { unsigned long long data; };
+
 } // namespace detail
 
 template <class T, class U> struct is_same       : false_type {};
@@ -43,19 +51,15 @@ template <class T> struct is_void : is_same<remove_cv_t<T>, void> {};
 template <class T> constexpr inline bool is_void_v = is_void<T>::value;
 
 template <class Base, class Derived>
-struct is_base_of : constant<bool,
-    sizeof(detail::is_base_of_impl<Base, Derived>::test(detail::is_base_of_impl<Base, Derived>{}, int{})) == sizeof(detail::yes_t)> {};
+struct is_base_of : detail::is_base_of<remove_cv_t<Base>, remove_cv_t<Derived>> {};
 template <class B, class D> constexpr inline bool is_base_of_v = is_base_of<B, D>::value;
 
 template <class T>
-struct is_class : constant<bool,
-    (sizeof(detail::is_class_impl::test(0)) == sizeof(detail::yes_t))> {};
+struct is_class : detail::is_class<remove_cv_t<T>> {};
 template <class T> constexpr inline bool is_class_v = is_class<T>::value;
 
 template <class T>
-struct is_empty : constant<bool,
-    (sizeof(detail::is_empty_impl<is_class_v<T>, T>) == sizeof(unsigned long long))
-> {};
+struct is_empty : boolean<(sizeof(detail::is_empty_h<is_class_v<T>, T>) == sizeof(unsigned long long))> {};
 template <class T> constexpr inline bool is_empty_v = is_empty<T>::value;
 
 template <class T, template <class...> class Template>
@@ -87,7 +91,7 @@ template <class T> struct is_pointer     : false_type {};
 template <class T> struct is_pointer<T*> : true_type  {};
 template <class T> constexpr inline bool is_pointer_v = is_pointer<T>::value;
 
-template <class T> struct is_array                      : false_type {};
+template <class T> struct is_array                 : false_type {};
 template <class T, size_t N> struct is_array<T[N]> : true_type  {};
 template <class T> constexpr inline bool is_array_v = is_array<T>::value;
 

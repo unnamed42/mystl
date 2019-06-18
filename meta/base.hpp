@@ -9,13 +9,14 @@ struct constant { static constexpr auto value = t; };
 using true_type  = constant<bool, true>;
 using false_type = constant<bool, false>;
 
-namespace detail {
-    struct yes_t { char data; };
-    struct no_t  { char data[2]; };
+template <bool B>
+using boolean = constant<bool, B>;
 
-    static_assert(sizeof(yes_t) != sizeof(no_t),
-                  "yes_t and no_t requires a different size");
-} // namespace detail
+template <class T>
+struct identity { using type = T; };
+
+template <class T>
+using identity_t = typename identity<T>::type;
 
 } // namespace stl
 

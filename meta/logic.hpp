@@ -7,8 +7,7 @@
 namespace stl {
 
 template <class B>
-struct not_
-    : constant<bool, !static_cast<bool>(B::value)> {};
+struct not_ : boolean<!B::value> {};
 
 template <class...> struct or_ : false_type {};
 template <class B1> struct or_<B1> : B1 {};

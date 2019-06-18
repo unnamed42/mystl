@@ -1,8 +1,9 @@
 #ifndef ALGORITHM_MINMAX
 #define ALGORITHM_MINMAX
 
+#include "meta/base.hpp"
+
 #include "utility/pair.hpp"
-#include "meta/identity.hpp"
 
 namespace stl {
 

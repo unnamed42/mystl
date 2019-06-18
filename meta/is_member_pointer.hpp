@@ -2,7 +2,7 @@
 #define META_IS_MEMBER_POINTER
 
 #include "meta/base.hpp"
-#include "meta/cv.hpp"
+#include "meta/cvref.hpp"
 #include "meta/logic.hpp"
 #include "meta/is_function.hpp"
 
