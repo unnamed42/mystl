@@ -2,13 +2,13 @@
 #define META_IS
 
 #include "meta/bits/is_array.hpp"
+#include "meta/bits/is_assignable.hpp"
 #include "meta/bits/is_base_of.hpp"
 #include "meta/bits/is_class.hpp"
 #include "meta/bits/is_const.hpp"
 #include "meta/bits/is_constructible.hpp"
 #include "meta/bits/is_convertible.hpp"
 #include "meta/bits/is_detected.hpp"
-#include "meta/bits/is_empty.hpp"
 #include "meta/bits/is_function.hpp"
 #include "meta/bits/is_instance_of.hpp"
 #include "meta/bits/is_member_pointer.hpp"
