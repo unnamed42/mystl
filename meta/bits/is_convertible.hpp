@@ -1,9 +1,8 @@
-#ifndef META_CONVERTIBLE
-#define META_CONVERTIBLE
+#ifndef META_BITS_CONVERTIBLE
+#define META_BITS_CONVERTIBLE
 
-#include "meta/base.hpp"
-
-#include "utility/declval.hpp"
+#include "meta/bits/constant.hpp"
+#include "meta/bits/declval.hpp"
 
 namespace stl {
 
@@ -31,4 +30,4 @@ constexpr inline bool is_convertible_v = is_convertible<T, U>::value;
 
 } // namespace stl
 
-#endif // META_CONVERTIBLE
+#endif // META_BITS_CONVERTIBLE

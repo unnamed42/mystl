@@ -1,7 +1,7 @@
-#ifndef META_IS_FUNCTION
-#define META_IS_FUNCTION
+#ifndef META_BITS_IS_FUNCTION
+#define META_BITS_IS_FUNCTION
 
-#include "meta/base.hpp"
+#include "meta/bits/constant.hpp"
 
 namespace stl {
 
@@ -38,4 +38,4 @@ constexpr inline bool is_function_v = is_function<T>::value;
 
 } // namespace stl
 
-#endif // META_IS_FUNCTION
+#endif // META_BITS_IS_FUNCTION

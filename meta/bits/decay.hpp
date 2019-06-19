@@ -1,10 +1,13 @@
-#ifndef META_DECAY
-#define META_DECAY
+#ifndef META_BITS_DECAY
+#define META_BITS_DECAY
 
-#include "meta/cvref.hpp"
-#include "meta/condition.hpp"
-
-#include "concept/function.hpp"
+#include "meta/bits/condition.hpp"
+#include "meta/bits/remove_cv.hpp"
+#include "meta/bits/remove_extent.hpp"
+#include "meta/bits/remove_reference.hpp"
+#include "meta/bits/add_pointer.hpp"
+#include "meta/bits/is_array.hpp"
+#include "meta/bits/is_function.hpp"
 
 namespace stl {
 
@@ -17,7 +20,7 @@ public:
         is_array_v<U>,
         remove_extent_t<U>*,
         condition_t<
-            function<U>::value,
+            is_function_v<U>,
             add_pointer_t<U>,
             remove_cv_t<U>
         >
@@ -28,4 +31,4 @@ template <class T> using decay_t = typename decay<T>::type;
 
 } // namespace stl
 
-#endif // META_DECAY
+#endif // META_BITS_DECAY

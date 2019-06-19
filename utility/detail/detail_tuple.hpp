@@ -3,10 +3,10 @@
 
 #include "def.hpp"
 
-#include "meta/index_sequence.hpp"
+#include "meta/bits/index_sequence.hpp"
 
 #include "utility/forward.hpp"
-#include "utility/tuple_types.hpp"
+#include "utility/detail/tuple_types.hpp"
 #include "utility/detail/pack_expansion.hpp"
 #include "utility/detail/tuple_element.hpp"
 #include "utility/detail/tuple_types.hpp"

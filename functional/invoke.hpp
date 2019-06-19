@@ -1,9 +1,10 @@
 #ifndef FUNCTIONAL_INVOKE
 #define FUNCTIONAL_INVOKE
 
-#include "meta/decay.hpp"
-#include "meta/check.hpp"
-#include "meta/is_member_pointer.hpp"
+#include "meta/bits/decay.hpp"
+#include "meta/bits/is_base_of.hpp"
+#include "meta/bits/is_reference_wrapper.hpp"
+#include "meta/bits/is_member_pointer.hpp"
 
 #include "utility/forward.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef META_ALIGNED_STORAGE
-#define META_ALIGNED_STORAGE
+#ifndef META_BITS_ALIGNED_STORAGE
+#define META_BITS_ALIGNED_STORAGE
 
 #include "def.hpp"
 
@@ -17,4 +17,4 @@ using aligned_storage_t = typename aligned_storage<Size, Align>::type;
 
 } // namespace stl
 
-#endif // META_ALIGNED_STORAGE
+#endif // META_BITS_ALIGNED_STORAGE

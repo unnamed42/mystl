@@ -1,12 +1,11 @@
 #ifndef UTILITY_REFERENCE_WRAPPER
 #define UTILITY_REFERENCE_WRAPPER
 
-#include "meta/cvref.hpp"
-#include "meta/check.hpp"
-#include "meta/sfinae.hpp"
+#include "meta/bits/enable_if.hpp"
+#include "meta/bits/remove_cvref.hpp"
+#include "meta/bits/declval.hpp"
 
 #include "utility/forward.hpp"
-#include "utility/declval.hpp"
 #include "utility/addressof.hpp"
 
 #include "functional/invoke.hpp"

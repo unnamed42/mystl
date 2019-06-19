@@ -1,10 +1,10 @@
 #ifndef UTILITY_DETAIL_TUPLE_CONVERTIBLE
 #define UTILITY_DETAIL_TUPLE_CONVERTIBLE
 
-#include "meta/base.hpp"
-#include "meta/cvref.hpp"
-#include "meta/logic.hpp"
-#include "meta/convertible.hpp"
+#include "meta/bits/logic.hpp"
+#include "meta/bits/constant.hpp"
+#include "meta/bits/is_convertible.hpp"
+#include "meta/bits/remove_reference.hpp"
 
 #include "utility/detail/tuple_like.hpp"
 #include "utility/detail/tuple_size.hpp"

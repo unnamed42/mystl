@@ -1,13 +1,14 @@
 #ifndef UTILITY_DETAIL_TUPLE_LEAF
 #define UTILITY_DETAIL_TUPLE_LEAF
 
-#include "meta/cvref.hpp"
-#include "meta/check.hpp"
-#include "meta/sfinae.hpp"
-#include "meta/constructible.hpp"
+#include "meta/bits/enable_if.hpp"
+#include "meta/bits/is_same.hpp"
+#include "meta/bits/declval.hpp"
+#include "meta/bits/is_reference.hpp"
+#include "meta/bits/is_constructible.hpp"
+#include "meta/bits/remove_reference.hpp"
 
 #include "utility/swap.hpp"
-#include "utility/declval.hpp"
 #include "utility/forward.hpp"
 #include "utility/reference_wrapper.hpp"
 
@@ -62,7 +63,6 @@ public:
 
     void swap(tuple_leaf &o) {
         using namespace stl;
-        using namespace std;
         swap(value, o.value);
     }
 
@@ -97,7 +97,6 @@ public:
 
     void swap(tuple_leaf &t) {
         using namespace stl;
-        using namespace std;
         swap(get(), t.get());
     }
 

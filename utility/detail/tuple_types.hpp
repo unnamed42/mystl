@@ -3,11 +3,11 @@
 
 #include "def.hpp"
 
-#include "meta/cvref.hpp"
-#include "meta/check.hpp"
-#include "meta/condition.hpp"
+#include "meta/bits/remove_reference.hpp"
+#include "meta/bits/is_reference.hpp"
+#include "meta/bits/condition.hpp"
 
-#include "utility/tuple_traits.hpp"
+#include "utility/detail/tuple_types.hpp"
 #include "utility/detail/tuple_size.hpp"
 #include "utility/detail/tuple_element.hpp"
 

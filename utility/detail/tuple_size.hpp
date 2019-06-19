@@ -1,6 +1,11 @@
 #ifndef UTILITY_DETAIL_TUPLE_SIZE
 #define UTILITY_DETAIL_TUPLE_SIZE
 
+#include "def.hpp"
+
+#include "meta/bits/constant.hpp"
+#include "meta/bits/remove_cv.hpp"
+
 namespace stl {
 
 template <class...> struct tuple;

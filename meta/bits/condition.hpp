@@ -1,7 +1,7 @@
-#ifndef META_CONDITION
-#define META_CONDITION
+#ifndef META_BITS_CONDITION
+#define META_BITS_CONDITION
 
-#include "meta/base.hpp"
+#include "meta/bits/identity.hpp"
 
 namespace stl {
 
@@ -16,4 +16,4 @@ using condition_t = typename condition<B, T, F>::type;
 
 } // namespace stl
 
-#endif // META_CONDITION
+#endif // META_BITS_CONDITION

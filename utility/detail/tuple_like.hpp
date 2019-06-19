@@ -1,6 +1,9 @@
 #ifndef UTILITY_DETAIL_TUPLE_LIKE
 #define UTILITY_DETAIL_TUPLE_LIKE
 
+#include "meta/bits/constant.hpp"
+#include "meta/bits/remove_cv.hpp"
+
 namespace stl {
 
 template <class...> struct tuple;

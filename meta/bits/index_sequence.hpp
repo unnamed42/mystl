@@ -1,5 +1,5 @@
-#ifndef META_INDEX_SEQUENCE
-#define META_INDEX_SEQUENCE
+#ifndef META_BITS_INDEX_SEQUENCE
+#define META_BITS_INDEX_SEQUENCE
 
 #include "def.hpp"
 
@@ -34,4 +34,4 @@ using make_index_sequence_t = typename make_index_sequence<N>::type;
 
 } // namespace stl
 
-#endif // META_INDEX_SEQUENCE
+#endif // META_BITS_INDEX_SEQUENCE

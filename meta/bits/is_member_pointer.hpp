@@ -1,10 +1,10 @@
-#ifndef META_IS_MEMBER_POINTER
-#define META_IS_MEMBER_POINTER
+#ifndef META_BITS_IS_MEMBER_POINTER
+#define META_BITS_IS_MEMBER_POINTER
 
-#include "meta/base.hpp"
 #include "meta/cvref.hpp"
-#include "meta/logic.hpp"
-#include "meta/is_function.hpp"
+#include "meta/bits/constant.hpp"
+#include "meta/bits/logic.hpp"
+#include "meta/bits/is_function.hpp"
 
 namespace stl {
 
@@ -44,4 +44,4 @@ constexpr inline bool is_member_object_pointer_v = is_member_object_pointer<T>::
 
 } // namespace stl
 
-#endif // META_IS_MEMBER_POINTER
+#endif // META_BITS_IS_MEMBER_POINTER

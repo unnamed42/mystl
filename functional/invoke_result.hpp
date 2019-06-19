@@ -1,13 +1,14 @@
 #ifndef FUNCTIONAL_INVOKE_RESULT
 #define FUNCTIONAL_INVOKE_RESULT
 
-#include "meta/check.hpp"
-#include "meta/decay.hpp"
-#include "meta/sfinae.hpp"
-#include "meta/is_function.hpp"
+#include "meta/bits/decay.hpp"
+#include "meta/bits/declval.hpp"
+#include "meta/bits/enable_if.hpp"
+#include "meta/bits/is_base_of.hpp"
+#include "meta/bits/is_function.hpp"
+#include "meta/bits/is_reference_wrapper.hpp"
 
 #include "utility/forward.hpp"
-#include "utility/declval.hpp"
 
 namespace stl {
 

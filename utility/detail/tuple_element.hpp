@@ -3,8 +3,8 @@
 
 #include "def.hpp"
 
-#include "meta/base.hpp"
-#include "meta/cvref.hpp"
+#include "meta/bits/identity.hpp"
+#include "meta/bits/add_cv.hpp"
 
 namespace stl {
 
