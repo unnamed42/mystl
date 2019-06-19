@@ -1,13 +1,15 @@
 #ifndef CRTP_COMPARABLE
 #define CRTP_COMPARABLE
 
+#include "meta/check.hpp"
 #include "meta/sfinae.hpp"
+
 #include "utility/forward.hpp"
 
 namespace stl {
 
 class comparable_access {
-    friend template <class D, class C> class comparable;
+    template <class D, class C> friend class comparable;
 
     template <class T, class U>
     static auto compare(T &&t, U &&u) { return t.compare(forward<U>(u)); }
@@ -19,7 +21,7 @@ private:
           Derived& derived()       noexcept { return *static_cast<Derived*>(this); }
     const Derived& derived() const noexcept { return *static_cast<const Derived*>(this); }
 private:
-    using access = stl::comparable_access;
+    using access = comparable_access;
 public:
     comparable() noexcept = default;
 
@@ -32,17 +34,17 @@ public:
 };
 
 template <class T, class Compared>
-stl::enable_if_t<!stl::is_same_v<T, Compared>, bool> operator<(const Compared &com, const stl::comparable<T, Compared> &obj) { return obj > com; }
+enable_if_t<!is_same_v<T, Compared>, bool> operator<(const Compared &com, const comparable<T, Compared> &obj) { return obj > com; }
 template <class T, class Compared>
-stl::enable_if_t<!stl::is_same_v<T, Compared>, bool> operator>(const Compared &com, const stl::comparable<T, Compared> &obj) { return obj < com; }
+enable_if_t<!is_same_v<T, Compared>, bool> operator>(const Compared &com, const comparable<T, Compared> &obj) { return obj < com; }
 template <class T, class Compared>
-stl::enable_if_t<!stl::is_same_v<T, Compared>, bool> operator==(const Compared &com, const stl::comparable<T, Compared> &obj) { return obj == com; }
+enable_if_t<!is_same_v<T, Compared>, bool> operator==(const Compared &com, const comparable<T, Compared> &obj) { return obj == com; }
 template <class T, class Compared>
-stl::enable_if_t<!stl::is_same_v<T, Compared>, bool> operator!=(const Compared &com, const stl::comparable<T, Compared> &obj) { return !(obj == com); }
+enable_if_t<!is_same_v<T, Compared>, bool> operator!=(const Compared &com, const comparable<T, Compared> &obj) { return !(obj == com); }
 template <class T, class Compared>
-stl::enable_if_t<!stl::is_same_v<T, Compared>, bool> operator<=(const Compared &com, const stl::comparable<T, Compared> &obj) { return !(com > obj); }
+enable_if_t<!is_same_v<T, Compared>, bool> operator<=(const Compared &com, const comparable<T, Compared> &obj) { return !(com > obj); }
 template <class T, class Compared>
-stl::enable_if_t<!stl::is_same_v<T, Compared>, bool> operator>=(const Compared &com, const stl::comparable<T, Compared> &obj) { return !(com < obj); }
+enable_if_t<!is_same_v<T, Compared>, bool> operator>=(const Compared &com, const comparable<T, Compared> &obj) { return !(com < obj); }
 
 } // namespace stl
 

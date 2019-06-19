@@ -32,7 +32,7 @@ public:
     using pointer         = P;
     using difference_type = D;
 private:
-    using access = stl::iterator_core_access;
+    using access = iterator_core_access;
 public:
     reference operator*()  { return access::deref(derived()); }
     pointer   operator->() { return &operator*(); }

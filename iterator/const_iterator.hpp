@@ -1,17 +1,27 @@
 #ifndef ITERATOR_CONST_ITERATOR
 #define ITERATOR_CONST_ITERATOR
 
-#include "meta/cv.hpp"
-#include "meta/ref.hpp"
+#include "meta/cvref.hpp"
+
 #include "iterator/iterator_traits.hpp"
+
+#include "crtp/comparable.hpp"
+#include "crtp/iterator_facade.hpp"
 
 namespace stl {
 
 template <class Iterator>
-class const_iterator {
+class const_iterator : iterator_facade<const_iterator<Iterator>,
+                                       typename iterator_traits<Iterator>::value_type,
+                                       typename iterator_traits<Iterator>::reference,
+                                       typename iterator_traits<Iterator>::pointer,
+                                       typename iterator_traits<Iterator>::difference_type>,
+                       comparable<const_iterator<Iterator>, Iterator> {
+    friend class iterator_core_access;
+    friend class comparable_access;
 private:
-    using traits_t = stl::iterator_traits<Iterator>;
-    using self_t   = stl::const_iterator<Iterator>;
+    using traits_t = iterator_traits<Iterator>;
+    using self_t   = const_iterator<Iterator>;
 public:
     using value_type        = typename traits_t::value_type;
     using pointer           = const remove_pointer_t<typename traits_t::pointer>*;
@@ -20,54 +30,34 @@ public:
     using iterator_category = typename traits_t::iterator_category;
 private:
     Iterator m_cursor;
+private:
+    void increment() { ++m_cursor; }
+    void decrement() { --m_cursor; }
+    void advance(difference_type diff) { m_cursor += diff; }
+    reference deref() { return *m_cursor; }
+    int compare(const Iterator &i) const { return m_cursor == i ? 0 : (m_cursor < i ? -1 : 1); }
 public:
     const_iterator(Iterator iter) : m_cursor(iter) {}
     const_iterator(const self_t &other) : m_cursor(other.m_cursor) {}
 
-    reference operator*()  const { return static_cast<reference>(*m_cursor); }
-    pointer   operator->() const { return &operator*(); }
     Iterator  base()       const { return m_cursor; }
-
-    self_t& operator++()    { ++m_cursor; return *this; }
-    self_t  operator++(int) { auto i=*this; operator++(); return i;}
-    self_t& operator--()    { --m_cursor; return *this; }
-    self_t  operator--(int) { auto i=*this; operator--(); return i;}
-
-    self_t& operator+=(difference_type diff)       { m_cursor+=diff; return *this; }
-    self_t  operator+ (difference_type diff) const { return self_t{m_cursor + diff}; }
-    self_t& operator-=(difference_type diff)       { m_cursor -= diff; return *this; }
-    self_t  operator- (difference_type diff) const { return self_t{m_cursor - diff}; }
 
     self_t& operator=(Iterator iter)       { m_cursor = iter; return *this; }
     self_t& operator=(const self_t &other) { m_cursor = other.m_cursor; return *this; }
 };
 
 template <class IterL, class IterR>
-inline bool operator<(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
+inline bool operator<(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator>(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return rhs < lhs; }
+inline bool operator>(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return rhs < lhs; }
 template <class IterL, class IterR>
-inline bool operator<=(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return !(lhs > rhs); }
+inline bool operator<=(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return !(lhs > rhs); }
 template <class IterL, class IterR>
-inline bool operator>=(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return !(lhs < rhs); }
+inline bool operator>=(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return !(lhs < rhs); }
 template <class IterL, class IterR>
-inline bool operator==(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
+inline bool operator==(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator!=(const stl::const_iterator<IterL> &lhs, const stl::const_iterator<IterR> &rhs) { return !(lhs == rhs); }
-
-// Make stl::const_iterator and underlying iterator co-operable
-template <class Iter> inline bool operator<(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return lhs < rhs.base(); }
-template <class Iter> inline bool operator>(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return lhs > rhs.base(); }
-template <class Iter> inline bool operator<=(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return !(lhs > rhs); }
-template <class Iter> inline bool operator>=(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return !(lhs < rhs); }
-template <class Iter> inline bool operator==(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return lhs == rhs.base(); }
-template <class Iter> inline bool operator!=(const Iter &lhs, const stl::const_iterator<Iter> &rhs) { return !(lhs == rhs); }
-template <class Iter> inline bool operator<(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs > lhs; }
-template <class Iter> inline bool operator>(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs < lhs; }
-template <class Iter> inline bool operator<=(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs >= lhs; }
-template <class Iter> inline bool operator>=(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs <= lhs; }
-template <class Iter> inline bool operator==(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs == lhs; }
-template <class Iter> inline bool operator!=(const stl::const_iterator<Iter> &lhs, const Iter &rhs) { return rhs != lhs; }
+inline bool operator!=(const const_iterator<IterL> &lhs, const const_iterator<IterR> &rhs) { return !(lhs == rhs); }
 
 } // namespace stl
 
