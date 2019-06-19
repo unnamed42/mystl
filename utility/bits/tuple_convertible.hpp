@@ -6,9 +6,9 @@
 #include "meta/bits/is_convertible.hpp"
 #include "meta/bits/remove_reference.hpp"
 
-#include "utility/detail/tuple_like.hpp"
-#include "utility/detail/tuple_size.hpp"
-#include "utility/detail/tuple_types.hpp"
+#include "utility/bits/tuple_like.hpp"
+#include "utility/bits/tuple_size.hpp"
+#include "utility/bits/tuple_types.hpp"
 
 namespace stl {
 

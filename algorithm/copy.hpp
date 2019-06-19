@@ -1,7 +1,8 @@
 #ifndef ALGORITHM_COPY
 #define ALGORITHM_COPY
 
-#include "utility/forward.hpp"
+#include "utility/bits/forward.hpp"
+
 #include "container/access.hpp"
 
 namespace stl {

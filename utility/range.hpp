@@ -1,8 +1,10 @@
 #ifndef UTILITY_RANGE
 #define UTILITY_RANGE
 
-#include "meta/cvref.hpp"
-#include "utility/forward.hpp"
+#include "meta/bits/remove_reference.hpp"
+
+#include "utility/bits/forward.hpp"
+
 #include "crtp/comparable.hpp"
 #include "crtp/iterator_facade.hpp"
 

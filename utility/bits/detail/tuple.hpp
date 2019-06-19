@@ -5,12 +5,12 @@
 
 #include "meta/bits/index_sequence.hpp"
 
-#include "utility/forward.hpp"
-#include "utility/detail/tuple_types.hpp"
-#include "utility/detail/pack_expansion.hpp"
-#include "utility/detail/tuple_element.hpp"
-#include "utility/detail/tuple_types.hpp"
-#include "utility/detail/detail_tuple_leaf.hpp"
+#include "utility/bits/forward.hpp"
+#include "utility/bits/tuple_types.hpp"
+#include "utility/bits/pack_expansion.hpp"
+#include "utility/bits/tuple_element.hpp"
+#include "utility/bits/tuple_types.hpp"
+#include "utility/bits/detail/tuple_leaf.hpp"
 
 namespace stl { namespace detail {
 

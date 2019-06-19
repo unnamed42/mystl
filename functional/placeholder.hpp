@@ -1,8 +1,6 @@
 #ifndef FUNCTIONAL_PLACEHOLDER
 #define FUNCTIONAL_PLACEHOLDER
 
-#include "utility/forward.hpp"
-
 namespace stl {
 
 template <int I>

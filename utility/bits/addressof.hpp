@@ -1,5 +1,5 @@
-#ifndef UTILITY_ADDRESSOF
-#define UTILITY_ADDRESSOF
+#ifndef UTILITY_BITS_ADDRESSOF
+#define UTILITY_BITS_ADDRESSOF
 
 namespace stl {
 
@@ -12,4 +12,4 @@ T* addressof(T &arg) {
 
 } // namespace stl
 
-#endif // UTILITY_ADDRESSOF
+#endif // UTILITY_BITS_ADDRESSOF

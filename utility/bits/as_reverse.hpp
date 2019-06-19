@@ -1,7 +1,7 @@
-#ifndef UTILITY_AS_REVERSE
-#define UTILITY_AS_REVERSE
+#ifndef UTILITY_BITS_aAS_REVERSE
+#define UTILITY_BITS_aAS_REVERSE
 
-#include "meta/cvref.hpp"
+#include "meta/bits/remove_reference.hpp"
 
 #include "container/access.hpp"
 
@@ -32,4 +32,4 @@ detail::reverse_wrapper<remove_reference_t<T>> as_reverse(T &t) {
 
 } // namespace stl
 
-#endif // UTILITY_AS_REVERSE
+#endif // UTILITY_BITS_aAS_REVERSE

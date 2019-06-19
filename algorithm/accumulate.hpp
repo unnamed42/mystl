@@ -1,7 +1,8 @@
 #ifndef ALGORITHM_ACCUMULATE
 #define ALGORITHM_ACCUMULATE
 
-#include "utility/forward.hpp"
+#include "utility/bits/forward.hpp"
+
 #include "container/acccess.hpp"
 
 namespace stl {

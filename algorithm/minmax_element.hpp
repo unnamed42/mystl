@@ -1,12 +1,16 @@
 #ifndef ALGORITHM_MINMAX_ELEMENT
 #define ALGORITHM_MINMAX_ELEMENT
 
-#include "meta/sfinae.hpp"
+#include "meta/bits/enable_if.hpp"
+
 #include "utility/pair.hpp"
-#include "utility/forward.hpp"
+#include "utility/bitsforward.hpp"
+
 #include "concept/sentinel.hpp"
 #include "concept/callable.hpp"
+
 #include "container/access.hpp"
+
 #include "functional/relation.hpp"
 
 namespace stl {
@@ -27,46 +31,46 @@ namespace detail {
 
 template <class InputIt, class SentinelIt, class Comparator>
 InputIt min_element(InputIt first, SentinelIt last, Comparator &&cmp) {
-    return detail::select_element(first, last, stl::forward<Comparator>(cmp));
+    return detail::select_element(first, last, forward<Comparator>(cmp));
 }
 
-template <class InputIt, class SentinelIt, class = stl::satisfied<stl::sentinel<SentinelIt, InputIt>> >
+template <class InputIt, class SentinelIt, class = satisfied<sentinel<SentinelIt, InputIt>> >
 InputIt min_element(InputIt first, SentinelIt last) {
-    return detail::select_element(first, last, stl::less<>{});
+    return detail::select_element(first, last, less<>{});
 }
 
-template <class Container, class Comparator, class = stl::satisfied<stl::callable<Comparator>> >
+template <class Container, class Comparator, class = satisfied<callable<Comparator>> >
 auto min_element(Container &&cont, Comparator &&cmp) {
-    return detail::select_element(stl::begin(cont), stl::end(cont), stl::forward<Comparator>(cmp));
+    return detail::select_element(begin(cont), end(cont), forward<Comparator>(cmp));
 }
 
 template <class Container>
 auto min_element(Container &&cont) {
-    return detail::select_element(stl::begin(cont), stl::end(cont), stl::less<>{});
+    return detail::select_element(begin(cont), end(cont), less<>{});
 }
 
 template <class InputIt, class SentinelIt, class Comparator>
 InputIt max_element(InputIt first, SentinelIt last, Comparator &&cmp) {
-    return detail::select_element(first, last, stl::forward<Comparator>(cmp));
+    return detail::select_element(first, last, forward<Comparator>(cmp));
 }
 
-template <class InputIt, class SentinelIt, class = stl::satisfied<stl::sentinel<SentinelIt, InputIt>> >
+template <class InputIt, class SentinelIt, class = satisfied<sentinel<SentinelIt, InputIt>> >
 auto max_element(InputIt first, SentinelIt last) {
-    return detail::select_element(first, last, stl::greater<>{});
+    return detail::select_element(first, last, greater<>{});
 }
 
-template <class Container, class Comparator, class = stl::satisfied<stl::callable<Comparator>> >
+template <class Container, class Comparator, class = satisfied<callable<Comparator>> >
 auto max_element(Container &&cont, Comparator &&cmp) {
-    return detail::select_element(stl::begin(cont), stl::end(cont), stl::forward<Comparator>(cmp));
+    return detail::select_element(begin(cont), end(cont), forward<Comparator>(cmp));
 }
 
 template <class Container>
 auto max_element(Container &&cont) {
-    return detail::select_element(stl::begin(cont), stl::end(cont), stl::greater<>{});
+    return detail::select_element(begin(cont), end(cont), greater<>{});
 }
 
 template <class InputIt, class SentinelIt, class Less>
-stl::pair<InputIt, InputIt> minmax_element(InputIt first, SentinelIt last, Less &&cmp) {
+pair<InputIt, InputIt> minmax_element(InputIt first, SentinelIt last, Less &&cmp) {
     InputIt min = first, max = first;
     for(; first != last; ++first) {
         if(cmp(*first, *min))
@@ -77,19 +81,19 @@ stl::pair<InputIt, InputIt> minmax_element(InputIt first, SentinelIt last, Less 
     return { min, max };
 }
 
-template <class InputIt, class SentinelIt, class = stl::satisfied<stl::sentinel<SentinelIt, InputIt>> >
+template <class InputIt, class SentinelIt, class = satisfied<sentinel<SentinelIt, InputIt>> >
 auto minmax_element(InputIt first, SentinelIt last) {
-    return stl::minmax_element(first, last, stl::less<>{});
+    return minmax_element(first, last, less<>{});
 }
 
-template <class Container, class Less, class = stl::satisfied<stl::callable<Less>> >
+template <class Container, class Less, class = satisfied<callable<Less>> >
 auto minmax_element(Container &&cont, Less &&cmp) {
-    return stl::minmax_element(stl::begin(cont), stl::end(cont), stl::forward<Less>(cmp));
+    return minmax_element(begin(cont), end(cont), forward<Less>(cmp));
 }
 
 template <class Container>
 auto minmax_element(Container &&cont) {
-    return stl::minmax_element(stl::begin(cont), stl::end(cont), stl::less<>{});
+    return minmax_element(begin(cont), end(cont), less<>{});
 }
 
 } // namespace stl

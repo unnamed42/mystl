@@ -1,12 +1,15 @@
 #ifndef ITERATOR_CONST_ITERATOR
 #define ITERATOR_CONST_ITERATOR
 
-#include "meta/cvref.hpp"
+#include "meta/bits/remove_pointer.hpp"
+#include "meta/bits/remove_reference.hpp"
 
 #include "iterator/iterator_traits.hpp"
 
 #include "crtp/comparable.hpp"
 #include "crtp/iterator_facade.hpp"
+
+#include "utility/bits/compare.hpp"
 
 namespace stl {
 
@@ -35,7 +38,7 @@ private:
     void decrement() { --m_cursor; }
     void advance(difference_type diff) { m_cursor += diff; }
     reference deref() { return *m_cursor; }
-    int compare(const Iterator &i) const { return m_cursor == i ? 0 : (m_cursor < i ? -1 : 1); }
+    int compare(const Iterator &i) const { return stl::compare(*this, i); }
 public:
     const_iterator(Iterator iter) : m_cursor(iter) {}
     const_iterator(const self_t &other) : m_cursor(other.m_cursor) {}

@@ -7,9 +7,9 @@
 #include "meta/bits/is_reference.hpp"
 #include "meta/bits/condition.hpp"
 
-#include "utility/detail/tuple_types.hpp"
-#include "utility/detail/tuple_size.hpp"
-#include "utility/detail/tuple_element.hpp"
+#include "utility/bits/tuple_types.hpp"
+#include "utility/bits/tuple_size.hpp"
+#include "utility/bits/tuple_element.hpp"
 
 namespace stl {
 

@@ -5,8 +5,8 @@
 #include "meta/bits/remove_cvref.hpp"
 #include "meta/bits/declval.hpp"
 
-#include "utility/forward.hpp"
-#include "utility/addressof.hpp"
+#include "utility/bits/forward.hpp"
+#include "utility/bits/addressof.hpp"
 
 #include "functional/invoke.hpp"
 

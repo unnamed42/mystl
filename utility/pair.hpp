@@ -1,10 +1,10 @@
 #ifndef UTILITY_PAIR
 #define UTILITY_PAIR
 
-#include "meta/cvref.hpp"
+#include "meta/bits/remove_reference.hpp"
 
-#include "utility/swap.hpp"
-#include "utility/forward.hpp"
+#include "utility/bits/swap.hpp"
+#include "utility/bits/forward.hpp"
 
 namespace stl {
 

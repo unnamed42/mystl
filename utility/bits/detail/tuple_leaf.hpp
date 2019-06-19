@@ -8,8 +8,8 @@
 #include "meta/bits/is_constructible.hpp"
 #include "meta/bits/remove_reference.hpp"
 
-#include "utility/swap.hpp"
-#include "utility/forward.hpp"
+#include "utility/bits/swap.hpp"
+#include "utility/bits/forward.hpp"
 #include "utility/reference_wrapper.hpp"
 
 #include <type_traits>

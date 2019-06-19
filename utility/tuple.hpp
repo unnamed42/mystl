@@ -1,28 +1,7 @@
 #ifndef UTILITY_TUPLE
 #define UTILITY_TUPLE
 
-#include "meta/cvref.hpp"
-#include "meta/check.hpp"
-#include "meta/sfinae.hpp"
-#include "meta/constructible.hpp"
-
-#include "utility/swap.hpp"
-#include "utility/declval.hpp"
-#include "utility/forward.hpp"
-#include "utility/reference_wrapper.hpp"
-
-// std::is_empty and std::is_final is compiler intrinsics
-#include <type_traits>
-
-namespace stl {
-
-namespace detail {
-
-
-
-} // namespace detail
-
-} // namespace stl
+#include "utility/bits/detail/tuple.hpp"
 
 // c++17 struture binding support
 

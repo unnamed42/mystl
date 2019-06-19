@@ -1,7 +1,8 @@
 #ifndef ALGORITHM_FOR_EACH
 #define ALGORITHM_FOR_EACH
 
-#include "utility/forward.hpp"
+#include "utility/bits/forward.hpp"
+
 #include "container/access.hpp"
 
 namespace stl {

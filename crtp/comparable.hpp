@@ -1,10 +1,10 @@
 #ifndef CRTP_COMPARABLE
 #define CRTP_COMPARABLE
 
-#include "meta/check.hpp"
-#include "meta/sfinae.hpp"
+#include "meta/bits/is_same.hpp"
+#include "meta/bits/enable_if.hpp"
 
-#include "utility/forward.hpp"
+#include "utility/bits/forward.hpp"
 
 namespace stl {
 

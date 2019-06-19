@@ -1,7 +1,7 @@
-#ifndef UTILITY_AS_CONST
-#define UTILITY_AS_CONST
+#ifndef UTILITY_BITS_AS_CONST
+#define UTILITY_BITS_AS_CONST
 
-#include "meta/cv.hpp"
+#include "meta/bits/add_const.hpp"
 
 namespace stl {
 
@@ -13,4 +13,4 @@ void as_const(const T &&) = delete;
 
 } // namespace stl
 
-#endif // UTILITY_AS_CONST
+#endif // UTILITY_BITS_AS_CONST

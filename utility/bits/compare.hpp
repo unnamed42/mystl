@@ -1,8 +1,8 @@
-#ifndef UTILITY_COMPARE
-#define UTILITY_COMPARE
+#ifndef UTILITY_BITS_COMPARE
+#define UTILITY_BITS_COMPARE
 
-#include "meta/sfinae.hpp"
-#include "utility/declval.hpp"
+#include "meta/bits/declval.hpp"
+#include "meta/bits/is_detected.hpp"
 
 namespace stl {
 
@@ -35,4 +35,4 @@ int compare(T1 &&t1, T2 &&t2) {
 
 } // namespace stl
 
-#endif // UTILITY_COMPARE
+#endif // UTILITY_BITS_COMPARE

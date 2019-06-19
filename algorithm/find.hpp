@@ -1,7 +1,8 @@
 #ifndef ALGORITHM_FIND
 #define ALGORITHM_FIND
 
-#include "utility/forward.hpp"
+#include "utility/bits/forward.hpp"
+
 #include "container/access.hpp"
 
 namespace stl {

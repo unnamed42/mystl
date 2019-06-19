@@ -1,7 +1,7 @@
-#ifndef UTILITY_SWAP
-#define UTILITY_SWAP
+#ifndef UTILITY_BITS_SWAP
+#define UTILITY_BITS_SWAP
 
-#include "utility/forward.hpp"
+#include "utility/bits/forward.hpp"
 
 namespace stl {
 
@@ -14,4 +14,4 @@ void swap(T &t1, T &t2) {
 
 } // namespace stl
 
-#endif // UTILITY_SWAP
+#endif // UTILITY_BITS_SWAP
