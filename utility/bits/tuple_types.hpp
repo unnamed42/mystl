@@ -3,11 +3,11 @@
 
 #include "def.hpp"
 
+#include "meta/bits/identity.hpp"
 #include "meta/bits/remove_reference.hpp"
 #include "meta/bits/is_reference.hpp"
 #include "meta/bits/condition.hpp"
 
-#include "utility/bits/tuple_types.hpp"
 #include "utility/bits/tuple_size.hpp"
 #include "utility/bits/tuple_element.hpp"
 
@@ -28,7 +28,7 @@ namespace detail {
                             tuple_element_t<Start, remove_reference_t<Tuple>>&,
                             tuple_element_t<Start, remove_reference_t<Tuple>> >
                          >,
-              Tuple, Start + 1, Stop>::type {};
+              Tuple, Start + 1, Stop> {};
 
     template <class ...Ts, class Tuple, size_t Stop>
     struct make_tuple_types<tuple_types<Ts...>, Tuple, Stop, Stop>
@@ -36,15 +36,21 @@ namespace detail {
 
 } // namespace detail
 
-template <class Tuple, size_t Start = 0,
-          size_t Stop = tuple_size_v<remove_reference_t<Tuple>>>
-struct make_tuple_types : detail::make_tuple_types<tuple_types<>, Tuple, Start, Stop> {
-    static_assert(Start <= Stop, "make_tuple_types: invalid parameters");
+template <class Tuple,
+          size_t Stop = tuple_size_v<remove_reference_t<Tuple>>,
+          size_t Start = 0>
+struct make_tuple_types {
+    static_assert(Stop >= Start, "make_tuple_types: invalid start index");
+
+    using type = typename detail::make_tuple_types<
+        tuple_types<>, Tuple, Start, Stop
+    >::type;
 };
 
-template <class Tuple, size_t Start = 0,
-          size_t Stop = tuple_size_v<remove_reference_t<Tuple>>>
-using make_tuple_types_t = typename make_tuple_types<Tuple, Start, Stop>::type;
+template <class Tuple,
+          size_t Stop = tuple_size_v<remove_reference_t<Tuple>>,
+          size_t Start = 0>
+using make_tuple_types_t = typename make_tuple_types<Tuple, Stop, Start>::type;
 
 } // namespace stl
 

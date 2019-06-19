@@ -8,7 +8,7 @@
 
 namespace stl {
 
-template <class...> struct tuple;
+template <class...> class tuple;
 template <class...> struct tuple_types;
 
 template <size_t I, class T>

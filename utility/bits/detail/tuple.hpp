@@ -6,6 +6,7 @@
 #include "meta/bits/index_sequence.hpp"
 
 #include "utility/bits/forward.hpp"
+#include "utility/bits/get_fwd.hpp"
 #include "utility/bits/tuple_types.hpp"
 #include "utility/bits/pack_expansion.hpp"
 #include "utility/bits/tuple_element.hpp"
@@ -14,50 +15,41 @@
 
 namespace stl { namespace detail {
 
-template <class Indexes, class ...Ts>
-struct tuple;
+template <class Idx, class ...Ts> struct tuple;
 
-template <size_t I, class C>
-decltype(auto) get(C&&);
+template <size_t ...Idx, class ...Ts>
+struct tuple<index_sequence<Idx...>, Ts...> : tuple_leaf<Idx, Ts>... {
 
-template <size_t ...Indexes, class ...Ts>
-struct tuple<index_sequence<Indexes...>, Ts...>
-    : tuple_leaf<Indexes, Ts>... {
-
-    template <size_t ...Indexes1, class ...Ts1,
-              size_t ...Indexes2, class ...Ts2,
-              class ...Args>
-    explicit tuple(
-        index_sequence<Indexes1...>, tuple_types<Ts1...>,
-        index_sequence<Indexes2...>, tuple_types<Ts2...>,
-        Args&& ...values)
-        : tuple_leaf<Indexes1, Ts1>(forward<Args>(values))...,
-          tuple_leaf<Indexes2, Ts2>()... {}
+    template <size_t ...Idx1, class ...Ts1,
+              size_t ...Idx2, class ...Ts2, class ...Values>
+    explicit tuple(index_sequence<Idx1...>, tuple_types<Ts1...>,
+                   index_sequence<Idx2...>, tuple_types<Ts2...>, Values&& ...values)
+        : tuple_leaf<Idx1, Ts1>(stl::forward<Values>(values))...,
+          tuple_leaf<Idx2, Ts2>()... {}
 
     template <class Tuple>
-    tuple(Tuple &&tuple)
-        : tuple_leaf<Indexes, Ts>(
-            forward< tuple_element_t<Indexes, make_tuple_types_t<Tuple>> >(get<Indexes>(tuple))
-          )... {}
+    tuple(Tuple &&tuple) : tuple_leaf<Idx, Ts> (
+        stl::forward< tuple_element_t<Idx, make_tuple_types_t<Tuple>> >(get<Idx>(tuple))
+    )... {}
 
     template <class Tuple>
     tuple& operator=(Tuple &&tuple) {
-        CALL_ON_PACK((static_cast<tuple_leaf<Indexes, Ts>&>(*this) =
-            forward< tuple_element_t<Indexes, make_tuple_types_t<Tuple>> >(get<Indexes>(tuple))
+        CALL_ON_PACK((static_cast<tuple_leaf<Idx, Ts>&>(*this) =
+            stl::forward< tuple_element_t<Idx, make_tuple_types_t<Tuple>> >(get<Idx>(tuple))
         ));
         return *this;
     }
 
     tuple& operator=(const tuple &tuple) {
-        CALL_ON_PACK((static_cast<tuple_leaf<Indexes, Ts>&>(*this) =
-            static_cast<const tuple_leaf<Indexes, Ts>&>(tuple).get()
+        CALL_ON_PACK((static_cast<tuple_leaf<Idx, Ts>&>(*this) =
+            static_cast<const tuple_leaf<Idx, Ts>&>(tuple).get()
         ));
         return *this;
     }
 
     void swap(tuple &tuple) {
-        CALL_ON_PACK((tuple_leaf<Indexes, Ts>::swap(
-            static_cast<tuple_leaf<Indexes, Ts>&>(tuple))
+        CALL_ON_PACK((tuple_leaf<Idx, Ts>::swap(
+            static_cast<tuple_leaf<Idx, Ts>&>(tuple))
         ));
     }
 

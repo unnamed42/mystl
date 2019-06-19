@@ -2,6 +2,7 @@
 #define UTILITY_DETAIL_TUPLE_LEAF
 
 #include "meta/bits/enable_if.hpp"
+#include "meta/bits/logic.hpp"
 #include "meta/bits/is_same.hpp"
 #include "meta/bits/declval.hpp"
 #include "meta/bits/is_reference.hpp"
@@ -12,12 +13,10 @@
 #include "utility/bits/forward.hpp"
 #include "utility/reference_wrapper.hpp"
 
-#include <type_traits>
-
 namespace stl { namespace detail {
 
 template <size_t Idx, class ValueType,
-          bool Empty = std::is_empty_v<ValueType> && !std::is_final_v<ValueType> >
+          bool Empty = __is_empty(ValueType) && !__is_final(ValueType)>
 class tuple_leaf;
 
 template <size_t I, class V, bool E>
@@ -40,15 +39,25 @@ public:
     }
 
     template < class T, class = enable_if_t<is_constructible_v<V, T>> >
-    explicit tuple_leaf(T &&t) : value(forward<T>(t)) {
-        static_assert(!is_reference_v<T> ||
-            (is_lvalue_reference_v<V> && (
-                (is_lvalue_reference_v<T> ||
-                 is_same_v<remove_reference_t<T>,
-                           reference_wrapper<remove_reference_t<V>> >))
-            ) ||
-            (is_rvalue_reference_v<V> && !is_lvalue_reference_v<T>),
+    explicit tuple_leaf(T &&t) : value(stl::forward<T>(t)) {
+        if constexpr (is_lvalue_reference_v<V>) {
+            static_assert(or_v<
+                not_<is_reference<T>>,
+                and_<
+                    is_lvalue_reference<V>,
+                    or_<
+                        is_lvalue_reference<T>,
+                        is_same<remove_reference_t<T>,
+                                reference_wrapper<remove_reference_t<V>>>
+                    >
+                >,
+                and_<
+                    is_rvalue_reference<V>,
+                    not_<is_lvalue_reference<T>>
+                >
+            >,
             "Attempt to construct a reference tuple member with an rvalue");
+        }
     }
 
     template <class T>

@@ -6,7 +6,7 @@
 
 namespace stl {
 
-template <class...> struct tuple;
+template <class...> class tuple;
 
 namespace detail {
 
