@@ -10,7 +10,7 @@ namespace stl { namespace detail {
 template <size_t I>
 struct tuple_equal {
     template <class Tuple1, class Tuple2>
-    bool operator()(const Tuple1 &lhs, const Tuple2 &rhs) const {
+    constexpr bool operator()(const Tuple1 &lhs, const Tuple2 &rhs) const {
         return tuple_equal<I - 1>{}(lhs, rhs) &&
             get<I - 1>(lhs) == get<I - 2>(rhs);
     }
@@ -19,7 +19,7 @@ struct tuple_equal {
 template <>
 struct tuple_equal<0> {
     template <class Tuple1, class Tuple2>
-    bool operator()(const Tuple1 &, const Tuple2 &) const {
+    constexpr bool operator()(const Tuple1 &, const Tuple2 &) const {
         return true;
     }
 };
@@ -27,7 +27,7 @@ struct tuple_equal<0> {
 template <size_t I>
 struct tuple_less {
     template <class Tuple1, class Tuple2>
-    bool operator()(const Tuple1 &lhs, const Tuple2 &rhs) const {
+    constexpr bool operator()(const Tuple1 &lhs, const Tuple2 &rhs) const {
         return tuple_less<I - 1>{}(lhs, rhs) ||
             (!tuple_less<I - 1>{}(rhs, lhs) && get<I - 1>(lhs) < get<I - 1>(rhs));
     }
@@ -36,7 +36,7 @@ struct tuple_less {
 template <>
 struct tuple_less<0> {
     template <class Tuple1, class Tuple2>
-    bool operator()(const Tuple1&, const Tuple2&) const {
+    constexpr bool operator()(const Tuple1&, const Tuple2&) const {
         return false;
     }
 };

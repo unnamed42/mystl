@@ -13,17 +13,17 @@ private:
     using reverse_iterator = stl::reverse_iterator<Iterator>;
     using const_reverse_iterator = stl::const_iterator<reverse_iterator>;
 
-          Derived& derived()       noexcept { return *static_cast<Derived*>(this); }
-    const Derived& derived() const noexcept { return *static_cast<const Derived*>(this); }
+    constexpr       Derived& derived()       noexcept { return *static_cast<Derived*>(this); }
+    constexpr const Derived& derived() const noexcept { return *static_cast<const Derived*>(this); }
 public:
-    const_iterator cbegin() const { return const_iterator{derived().begin()}; }
-    const_iterator cend()   const { return const_iterator{derived().end()}; }
+    constexpr const_iterator cbegin() const { return const_iterator{derived().begin()}; }
+    constexpr const_iterator cend()   const { return const_iterator{derived().end()}; }
 
-    reverse_iterator rbegin() { return reverse_iterator{derived().end()}; }
-    reverse_iterator rend()   { return reverse_iterator{derived().begin()}; }
+    constexpr reverse_iterator rbegin() { return reverse_iterator{derived().end()}; }
+    constexpr reverse_iterator rend()   { return reverse_iterator{derived().begin()}; }
 
-    const_reverse_iterator crbegin() const { return const_iterator{rbegin()}; }
-    const_reverse_iterator crend()   const { return const_iterator{rend}; }
+    constexpr const_reverse_iterator crbegin() const { return const_iterator{rbegin()}; }
+    constexpr const_reverse_iterator crend()   const { return const_iterator{rend}; }
 };
 
 } // namespace stl

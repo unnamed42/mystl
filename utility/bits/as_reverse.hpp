@@ -13,20 +13,20 @@ template <class Container>
 class reverse_wrapper {
     Container &cont;
 public:
-    reverse_wrapper(Container &cont) noexcept
+    constexpr reverse_wrapper(Container &cont) noexcept
         : cont(cont) {}
 
-    auto begin() { return rbegin(cont); }
-    auto end()   { return rend(cont); }
+    constexpr auto begin() { return rbegin(cont); }
+    constexpr auto end()   { return rend(cont); }
 
-    auto cbegin() const { return rbegin(cont); }
-    auto cend()   const { return rend(cont); }
+    constexpr auto cbegin() const { return rbegin(cont); }
+    constexpr auto cend()   const { return rend(cont); }
 };
 
 } // namespace detail
 
 template <class T>
-detail::reverse_wrapper<remove_reference_t<T>> as_reverse(T &t) {
+constexpr detail::reverse_wrapper<remove_reference_t<T>> as_reverse(T &t) {
     return { t };
 }
 

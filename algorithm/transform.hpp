@@ -8,7 +8,7 @@
 namespace stl {
 
 template <class InputIt, class SentinelIt, class OutputIt, class Transformer>
-OutputIt transform(InputIt first, SentinelIt last, OutputIt out, Transformer &&tran) {
+constexpr OutputIt transform(InputIt first, SentinelIt last, OutputIt out, Transformer &&tran) {
     while(first != last) {
         *out++ = tran(*first++);
     }
@@ -16,7 +16,7 @@ OutputIt transform(InputIt first, SentinelIt last, OutputIt out, Transformer &&t
 }
 
 template <class Container, class OutputIt, class Transformer>
-OutputIt transform(Container &&cont, OutputIt out, Transformer &&trans) {
+constexpr OutputIt transform(Container &&cont, OutputIt out, Transformer &&trans) {
     return transform(begin(cont), end(cont), out, forward<Transformer>(trans));
 }
 

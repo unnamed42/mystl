@@ -14,8 +14,8 @@ namespace stl {
 
 namespace detail {
 
-    template <class T> T& fun(T &t) noexcept { return t; }
-    template <class T> void fun(T&&) = delete;
+    template <class T> constexpr T& fun(T &t) noexcept { return t; }
+    template <class T> const T& fun(T&&) = delete;
 
 } // namespace detail
 
@@ -30,17 +30,17 @@ public:
         detail::fun<T>(declval<U>()),
         enable_if_t< !is_same_v<reference_wrapper, remove_cvref_t<U>> >{}
     )>
-    reference_wrapper(U &&u) noexcept(noexcept(detail::fun<T>(forward<U>(u))))
+    constexpr reference_wrapper(U &&u) noexcept(noexcept(detail::fun<T>(forward<U>(u))))
         : p(addressof(detail::fun<T>(forward<U>(u)))) {}
 
-    reference_wrapper(const reference_wrapper &) noexcept = default;
-    reference_wrapper& operator=(const reference_wrapper&) noexcept = default;
+    constexpr reference_wrapper(const reference_wrapper &) noexcept = default;
+    constexpr reference_wrapper& operator=(const reference_wrapper&) noexcept = default;
 
-    operator T&()     const noexcept { return *p; }
-             T& get() const noexcept { return *p; }
+    constexpr operator T&()     const noexcept { return *p; }
+    constexpr          T& get() const noexcept { return *p; }
 
     template <class ...Args>
-    void operator()(Args&& ...args) const {
+    constexpr void operator()(Args&& ...args) const {
         return invoke(get(), forward<Args>(args)...);
     }
 };

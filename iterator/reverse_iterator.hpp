@@ -26,32 +26,32 @@ public:
 private:
     Iterator m_iter;
 private:
-    void increment() { --m_iter; }
-    void decrement() { ++m_iter; }
-    void advance(difference_type diff) { m_iter -= diff; }
-    reference deref() { return *(m_iter - 1); }
+    constexpr void increment() { --m_iter; }
+    constexpr void decrement() { ++m_iter; }
+    constexpr void advance(difference_type diff) { m_iter -= diff; }
+    constexpr reference deref() { return *(m_iter - 1); }
 public:
-    reverse_iterator(const Iterator &iter) : m_iter(iter) {}
-    reverse_iterator(const self_t &other) : m_iter(other.m_iter) {}
+    constexpr reverse_iterator(const Iterator &iter) : m_iter(iter) {}
+    constexpr reverse_iterator(const self_t &other) : m_iter(other.m_iter) {}
 
-    Iterator base() const { return m_iter; }
+    constexpr Iterator base() const { return m_iter; }
 
-    self_t& operator=(const Iterator &iter) { m_iter = iter; return *this; }
-    self_t& operator=(const self_t &other)  { m_iter = other.m_iter; return *this; }
+    constexpr self_t& operator=(const Iterator &iter) { m_iter = iter; return *this; }
+    constexpr self_t& operator=(const self_t &other)  { m_iter = other.m_iter; return *this; }
 };
 
 template <class IterL, class IterR>
-inline bool operator<(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
+constexpr inline bool operator<(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return lhs.base() < rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator>(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return rhs < lhs; }
+constexpr inline bool operator>(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return rhs < lhs; }
 template <class IterL, class IterR>
-inline bool operator<=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs > rhs); }
+constexpr inline bool operator<=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs > rhs); }
 template <class IterL, class IterR>
-inline bool operator>=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs < rhs); }
+constexpr inline bool operator>=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs < rhs); }
 template <class IterL, class IterR>
-inline bool operator==(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
+constexpr inline bool operator==(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return lhs.base() == rhs.base(); }
 template <class IterL, class IterR>
-inline bool operator!=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs == rhs); }
+constexpr inline bool operator!=(const reverse_iterator<IterL> &lhs, const reverse_iterator<IterR> &rhs) { return !(lhs == rhs); }
 
 } // namespace stl
 

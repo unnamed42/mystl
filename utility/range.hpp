@@ -24,27 +24,27 @@ private:
 private:
     using self = range_iterator<T>;
 protected:
-    int compare(const detail::range_sentinel&) const { return val != last; }
-    int compare(const self &o) const { return val - o.val; }
-    void increment() { ++val; }
-    void decrement() { --val; }
-    T&   deref() { return val; }
+    constexpr int compare(const detail::range_sentinel&) const { return val != last; }
+    constexpr int compare(const self &o) const { return val - o.val; }
+    constexpr void increment() { ++val; }
+    constexpr void decrement() { --val; }
+    constexpr T&   deref() { return val; }
 public:
-    range_iterator(const T &v, const T &l)
+    constexpr range_iterator(const T &v, const T &l)
         : val(v), last(l) {}
 
-    range_iterator(const self &o)
+    constexpr range_iterator(const self &o)
         : range_iterator(o.val, o.last) {}
 
-    self                   begin() { return *this; }
-    detail::range_sentinel end()   { return {}; }
+    constexpr self                   begin() { return *this; }
+    constexpr detail::range_sentinel end()   { return {}; }
 
-    bool operator==(detail::range_sentinel) const { return val == last; }
-    bool operator!=(detail::range_sentinel) const { return !operator==({}); }
+    constexpr bool operator==(detail::range_sentinel) const { return val == last; }
+    constexpr bool operator!=(detail::range_sentinel) const { return !operator==({}); }
 };
 
 template <class T>
-range_iterator<remove_reference_t<T>> range(T &&first, T &&last) {
+constexpr range_iterator<remove_reference_t<T>> range(T &&first, T &&last) {
     return { forward<T>(first), forward<T>(last) };
 }
 

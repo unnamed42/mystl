@@ -18,7 +18,7 @@ namespace stl {
 namespace detail {
 
     template <class InputIt, class SentinelIt, class Comparator>
-    InputIt select_element(InputIt first, SentinelIt last, Comparator &&cmp) {
+    constexpr InputIt select_element(InputIt first, SentinelIt last, Comparator &&cmp) {
         auto selected = first;
         for(; first != last; ++first) {
             if(cmp(*first, *selected))
@@ -30,47 +30,47 @@ namespace detail {
 } // namespace detail
 
 template <class InputIt, class SentinelIt, class Comparator>
-InputIt min_element(InputIt first, SentinelIt last, Comparator &&cmp) {
+constexpr InputIt min_element(InputIt first, SentinelIt last, Comparator &&cmp) {
     return detail::select_element(first, last, forward<Comparator>(cmp));
 }
 
 template <class InputIt, class SentinelIt, class = satisfied<sentinel<SentinelIt, InputIt>> >
-InputIt min_element(InputIt first, SentinelIt last) {
+constexpr InputIt min_element(InputIt first, SentinelIt last) {
     return detail::select_element(first, last, less<>{});
 }
 
 template <class Container, class Comparator, class = satisfied<callable<Comparator>> >
-auto min_element(Container &&cont, Comparator &&cmp) {
+constexpr auto min_element(Container &&cont, Comparator &&cmp) {
     return detail::select_element(begin(cont), end(cont), forward<Comparator>(cmp));
 }
 
 template <class Container>
-auto min_element(Container &&cont) {
+constexpr auto min_element(Container &&cont) {
     return detail::select_element(begin(cont), end(cont), less<>{});
 }
 
 template <class InputIt, class SentinelIt, class Comparator>
-InputIt max_element(InputIt first, SentinelIt last, Comparator &&cmp) {
+constexpr InputIt max_element(InputIt first, SentinelIt last, Comparator &&cmp) {
     return detail::select_element(first, last, forward<Comparator>(cmp));
 }
 
 template <class InputIt, class SentinelIt, class = satisfied<sentinel<SentinelIt, InputIt>> >
-auto max_element(InputIt first, SentinelIt last) {
+constexpr auto max_element(InputIt first, SentinelIt last) {
     return detail::select_element(first, last, greater<>{});
 }
 
 template <class Container, class Comparator, class = satisfied<callable<Comparator>> >
-auto max_element(Container &&cont, Comparator &&cmp) {
+constexpr auto max_element(Container &&cont, Comparator &&cmp) {
     return detail::select_element(begin(cont), end(cont), forward<Comparator>(cmp));
 }
 
 template <class Container>
-auto max_element(Container &&cont) {
+constexpr auto max_element(Container &&cont) {
     return detail::select_element(begin(cont), end(cont), greater<>{});
 }
 
 template <class InputIt, class SentinelIt, class Less>
-pair<InputIt, InputIt> minmax_element(InputIt first, SentinelIt last, Less &&cmp) {
+constexpr pair<InputIt, InputIt> minmax_element(InputIt first, SentinelIt last, Less &&cmp) {
     InputIt min = first, max = first;
     for(; first != last; ++first) {
         if(cmp(*first, *min))
@@ -82,17 +82,17 @@ pair<InputIt, InputIt> minmax_element(InputIt first, SentinelIt last, Less &&cmp
 }
 
 template <class InputIt, class SentinelIt, class = satisfied<sentinel<SentinelIt, InputIt>> >
-auto minmax_element(InputIt first, SentinelIt last) {
+constexpr auto minmax_element(InputIt first, SentinelIt last) {
     return minmax_element(first, last, less<>{});
 }
 
 template <class Container, class Less, class = satisfied<callable<Less>> >
-auto minmax_element(Container &&cont, Less &&cmp) {
+constexpr auto minmax_element(Container &&cont, Less &&cmp) {
     return minmax_element(begin(cont), end(cont), forward<Less>(cmp));
 }
 
 template <class Container>
-auto minmax_element(Container &&cont) {
+constexpr auto minmax_element(Container &&cont) {
     return minmax_element(begin(cont), end(cont), less<>{});
 }
 

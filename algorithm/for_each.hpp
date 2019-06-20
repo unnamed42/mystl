@@ -8,7 +8,7 @@
 namespace stl {
 
 template <class InputIt, class SentinelIt, class Unary>
-void for_each(InputIt first, SentinelIt last, Unary &&unary) {
+constexpr void for_each(InputIt first, SentinelIt last, Unary &&unary) {
     while(first != last) {
         if(!unary(*first))
             break;
@@ -17,7 +17,7 @@ void for_each(InputIt first, SentinelIt last, Unary &&unary) {
 }
 
 template <class Container, class Unary>
-void for_each(Container &&cont, Unary &&unary) {
+constexpr void for_each(Container &&cont, Unary &&unary) {
     for_each(begin(cont), end(cont), forward<Unary>(unary));
 }
 

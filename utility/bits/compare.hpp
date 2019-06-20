@@ -21,7 +21,7 @@ namespace detail {
 } // namespace detail
 
 template <class T1, class T2>
-int compare(T1 &&t1, T2 &&t2) {
+constexpr int compare(T1 &&t1, T2 &&t2) {
     if constexpr(detail::can_compare<T1, T2>)
         return t1.compare(t2);
     else if constexpr(detail::can_substract<T1, T2>)
