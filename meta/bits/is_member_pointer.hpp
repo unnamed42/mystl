@@ -11,28 +11,28 @@ namespace stl {
 namespace detail {
 
     template <class T>
-    struct is_member_pointer : false_type {};
+    struct is_member_pointer_impl : false_type {};
 
     template <class T, class Class>
-    struct is_member_pointer<T Class::*> : true_type {};
+    struct is_member_pointer_impl<T Class::*> : true_type {};
 
     template <class T>
-    struct is_member_function_pointer : false_type {};
+    struct is_member_function_pointer_impl : false_type {};
 
     template <class T, class Class>
-    struct is_member_function_pointer<T Class::*> : is_function<T> {};
+    struct is_member_function_pointer_impl<T Class::*> : is_function<T> {};
 
 } // namespace detail
 
 template <class T>
 struct is_member_pointer :
-    detail::is_member_pointer<remove_cv_t<T>> {};
+    detail::is_member_pointer_impl<remove_cv_t<T>> {};
 template <class T>
 constexpr inline bool is_member_pointer_v = is_member_pointer<T>::value;
 
 template <class T>
 struct is_member_function_pointer
-    : detail::is_member_function_pointer<remove_cv_t<T>> {};
+    : detail::is_member_function_pointer_impl<remove_cv_t<T>> {};
 template <class T>
 constexpr inline bool is_member_function_pointer_v = is_member_function_pointer<T>::value;
 

@@ -15,20 +15,20 @@ template <class...> struct tuple_types;
 namespace detail {
 
     template <class>
-    struct tuple_size;
+    struct tuple_size_impl {};
 
     template <class ...Ts>
-    struct tuple_size<tuple_types<Ts...>>
+    struct tuple_size_impl<tuple_types<Ts...>>
         : constant<size_t, sizeof...(Ts)> {};
 
     template <class ...Ts>
-    struct tuple_size<tuple<Ts...>>
+    struct tuple_size_impl<tuple<Ts...>>
         : constant<size_t, sizeof...(Ts)> {};
 
 } // namespace detail
 
 template <class T>
-struct tuple_size : detail::tuple_size<remove_cv_t<T>> {};
+struct tuple_size : detail::tuple_size_impl<remove_cv_t<T>> {};
 
 template <class T>
 constexpr inline size_t tuple_size_v = tuple_size<T>::value;

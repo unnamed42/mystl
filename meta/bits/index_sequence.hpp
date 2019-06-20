@@ -26,13 +26,13 @@ namespace detail {
         : identity<index_sequence<(Idx + N)...>> {};
 
     template <size_t N>
-    struct make_index_sequence : numbers_concat<
-        typename make_index_sequence<N/2>::type,
-        typename make_index_sequence<N - N/2>::type
+    struct make_index_sequence_impl : numbers_concat<
+        typename make_index_sequence_impl<N/2>::type,
+        typename make_index_sequence_impl<N - N/2>::type
     > {};
 
-    template <> struct make_index_sequence<0> : identity<index_sequence<>> {};
-    template <> struct make_index_sequence<1> : identity<index_sequence<0>> {};
+    template <> struct make_index_sequence_impl<0> : identity<index_sequence<>> {};
+    template <> struct make_index_sequence_impl<1> : identity<index_sequence<0>> {};
 
 } // namespace detail
 
@@ -41,13 +41,13 @@ struct make_index_sequence {
     static_assert(Stop >= Start, "make_index_sequence: invalid start index");
 
     using type = typename detail::index_sequence_add<
-        typename detail::make_index_sequence<Stop - Start>::type,
+        typename detail::make_index_sequence_impl<Stop - Start>::type,
         Start
     >::type;
 };
 
 template <size_t N>
-struct make_index_sequence<N, 0> : detail::make_index_sequence<N> {};
+struct make_index_sequence<N, 0> : detail::make_index_sequence_impl<N> {};
 
 template <size_t Stop, size_t Start = 0>
 using make_index_sequence_t = typename make_index_sequence<Stop, Start>::type;

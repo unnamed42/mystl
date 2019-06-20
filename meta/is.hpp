@@ -11,6 +11,7 @@
 #include "meta/bits/is_detected.hpp"
 #include "meta/bits/is_function.hpp"
 #include "meta/bits/is_instance_of.hpp"
+#include "meta/bits/is_invocable.hpp"
 #include "meta/bits/is_member_pointer.hpp"
 #include "meta/bits/is_pointer.hpp"
 #include "meta/bits/is_reference_wrapper.hpp"

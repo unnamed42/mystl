@@ -20,7 +20,7 @@ template <size_t Idx, class ValueType,
 class tuple_leaf;
 
 template <size_t I, class V, bool E>
-inline void swap(tuple_leaf<I, V, E> &lhs, tuple_leaf<I, V, E> &rhs) {
+inline constexpr void swap(tuple_leaf<I, V, E> &lhs, tuple_leaf<I, V, E> &rhs) {
     swap(lhs.get(), rhs.get());
 }
 
@@ -28,18 +28,18 @@ template <size_t I, class V, bool E>
 class tuple_leaf {
     V value;
 public:
-    tuple_leaf() : value() {
+    constexpr tuple_leaf() : value() {
         static_assert(!is_reference_v<V>,
             "Attempt to default construct a reference element in tuple");
     }
 
-    tuple_leaf(const tuple_leaf &t) : value(t.get()) {
+    constexpr tuple_leaf(const tuple_leaf &t) : value(t.get()) {
         static_assert(!is_rvalue_reference_v<V>,
             "Cannot copy a tuple with rvalue reference member");
     }
 
     template < class T, class = enable_if_t<is_constructible_v<V, T>> >
-    explicit tuple_leaf(T &&t) : value(stl::forward<T>(t)) {
+    explicit constexpr tuple_leaf(T &&t) : value(stl::forward<T>(t)) {
         if constexpr (is_lvalue_reference_v<V>) {
             static_assert(or_v<
                 not_<is_reference<T>>,
@@ -61,56 +61,56 @@ public:
     }
 
     template <class T>
-    explicit tuple_leaf(const tuple_leaf<I, T> &t)
+    explicit constexpr tuple_leaf(const tuple_leaf<I, T> &t)
         : value(t.get()) {}
 
     template <class T>
-    tuple_leaf& operator=(T &&t) {
+    constexpr tuple_leaf& operator=(T &&t) {
         value = forward<T>(t);
         return *this;
     }
 
-    void swap(tuple_leaf &o) {
+    constexpr void swap(tuple_leaf &o) {
         using namespace stl;
         swap(value, o.value);
     }
 
-          V& get()       { return value; }
-    const V& get() const { return value; }
+    constexpr       V& get()       { return value; }
+    constexpr const V& get() const { return value; }
 };
 
 // special case for empty member
 template <size_t I, class V>
 class tuple_leaf<I, V, true> : private V {
 public:
-    tuple_leaf() = default;
+    constexpr tuple_leaf() = default;
 
-    tuple_leaf(const tuple_leaf &t) : V(t.get()) {
+    constexpr tuple_leaf(const tuple_leaf &t) : V(t.get()) {
         static_assert(!is_rvalue_reference_v<V>,
                       "Cannot copy a tuple with rvalue reference member");
     }
 
     template <class T,
         class = enable_if_t<is_constructible_v<V, T>> >
-    explicit tuple_leaf(T &&t) : V(forward<T>(t)) {}
+    explicit constexpr tuple_leaf(T &&t) : V(forward<T>(t)) {}
 
     template <class T>
-    explicit tuple_leaf(const tuple_leaf<I, T> &t)
+    explicit constexpr tuple_leaf(const tuple_leaf<I, T> &t)
         : V(t.get()) {}
 
     template <class T>
-    tuple_leaf& operator=(T &&t) {
+    constexpr tuple_leaf& operator=(T &&t) {
         get() = forward<T>(t);
         return *this;
     }
 
-    void swap(tuple_leaf &t) {
+    constexpr void swap(tuple_leaf &t) {
         using namespace stl;
         swap(get(), t.get());
     }
 
-          V& get()       { return *static_cast<V*>(this); }
-    const V& get() const { return *static_cast<V*>(this); }
+    constexpr       V& get()       { return *static_cast<V*>(this); }
+    constexpr const V& get() const { return *static_cast<V*>(this); }
 };
 
 }} // namespace detail

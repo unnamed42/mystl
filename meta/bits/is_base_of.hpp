@@ -21,13 +21,13 @@ namespace detail {
     };
 
     template <class B, class D>
-    struct is_base_of
+    struct is_base_of_impl
         : decltype(is_base_of_h<B, D>::test(is_base_of_h<B, D>{}, int{})) {};
 
 } // namespace detail
 
 template <class Base, class Derived>
-struct is_base_of : detail::is_base_of<remove_cv_t<Base>, remove_cv_t<Derived>> {};
+struct is_base_of : detail::is_base_of_impl<remove_cv_t<Base>, remove_cv_t<Derived>> {};
 template <class B, class D> constexpr inline bool is_base_of_v = is_base_of<B, D>::value;
 
 } // namespace stl

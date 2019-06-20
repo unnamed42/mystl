@@ -10,10 +10,10 @@ namespace stl {
 namespace detail {
 
     template <class, class, class...>
-    struct is_constructible : false_type {};
+    struct is_constructible_impl : false_type {};
 
     template <class T, class ...Args>
-    struct is_constructible<
+    struct is_constructible_impl<
         void_t<decltype(T(declval<Args>()...))>,
         T, Args...
     > : true_type {};
@@ -21,7 +21,7 @@ namespace detail {
 } // namespace detail
 
 template <class T, class ...Args>
-struct is_constructible : detail::is_constructible<void_t<>, T, Args...> {};
+struct is_constructible : detail::is_constructible_impl<void_t<>, T, Args...> {};
 
 template <class T, class ...Args>
 constexpr inline bool is_constructible_v = is_constructible<T, Args...>::value;

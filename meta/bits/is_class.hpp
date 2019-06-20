@@ -16,12 +16,12 @@ namespace detail {
     };
 
     template <class T>
-    struct is_class : decltype(is_class_h::test(0)) {};
+    struct is_class_impl : decltype(is_class_h::test(0)) {};
 
 } // namespace detail
 
 template <class T>
-struct is_class : detail::is_class<remove_cv_t<T>> {};
+struct is_class : detail::is_class_impl<remove_cv_t<T>> {};
 template <class T> constexpr inline bool is_class_v = is_class<T>::value;
 
 } // namespace stl

@@ -1,5 +1,5 @@
-#ifndef FUNCTIONAL_INVOKE
-#define FUNCTIONAL_INVOKE
+#ifndef FUNCTIONAL_BITS_INVOKE
+#define FUNCTIONAL_BITS_INVOKE
 
 #include "meta/bits/decay.hpp"
 #include "meta/bits/is_base_of.hpp"
@@ -8,7 +8,7 @@
 
 #include "utility/bits/forward.hpp"
 
-#include "functional/invoke_result.hpp"
+#include "functional/bits/invoke_result.hpp"
 
 namespace stl {
 
@@ -16,7 +16,7 @@ namespace detail {
 
     // Object is not required to be exactly Class
     template <class F, class Class, class Object, class ...Args>
-    decltype(auto) invoke(F Class::* f, Object &&obj, Args&& ...args) {
+    constexpr decltype(auto) invoke_impl(F Class::* f, Object &&obj, Args&& ...args) {
         if constexpr (is_member_function_pointer_v<decltype(f)>) {
             if constexpr (is_base_of_v<F, decay_t<Object>>)
                 return (forward<Object>(obj).*f)(forward<Args>(args)...);
@@ -37,17 +37,17 @@ namespace detail {
     }
 
     template <class F, class ...Args>
-    decltype(auto) invoke(F &&f, Args&& ...args) {
+    constexpr decltype(auto) invoke_impl(F &&f, Args&& ...args) {
         return forward<F>(f)(forward<Args>(args)...);
     }
 
 } // namespace detail
 
 template <class F, class ...Args>
-invoke_result_t<F, Args...> invoke(F &&f, Args&& ...args) {
-    return detail::invoke(forward<F>(f), forward<Args>(args)...);
+constexpr invoke_result_t<F, Args...> invoke(F &&f, Args&& ...args) {
+    return detail::invoke_impl(forward<F>(f), forward<Args>(args)...);
 }
 
 } // namespace stl
 
-#endif // FUNCTIONAL_INVOKE
+#endif // FUNCTIONAL_BITS_INVOKE

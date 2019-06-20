@@ -18,11 +18,11 @@ template <class...> struct tuple_types {};
 namespace detail {
 
     template <class TupleTypes, class Tuple, size_t Start, size_t Stop>
-    struct make_tuple_types;
+    struct make_tuple_types_impl;
 
     template <class ...Ts, class Tuple, size_t Start, size_t Stop>
-    struct make_tuple_types<tuple_types<Ts...>, Tuple, Start, Stop>
-        : make_tuple_types<
+    struct make_tuple_types_impl<tuple_types<Ts...>, Tuple, Start, Stop>
+        : make_tuple_types_impl<
               tuple_types<Ts..., condition_t<is_lvalue_reference_v<Tuple>,
                             // maintain reference-ness
                             tuple_element_t<Start, remove_reference_t<Tuple>>&,
@@ -31,7 +31,7 @@ namespace detail {
               Tuple, Start + 1, Stop> {};
 
     template <class ...Ts, class Tuple, size_t Stop>
-    struct make_tuple_types<tuple_types<Ts...>, Tuple, Stop, Stop>
+    struct make_tuple_types_impl<tuple_types<Ts...>, Tuple, Stop, Stop>
         : identity<tuple_types<Ts...>> {};
 
 } // namespace detail
@@ -42,7 +42,7 @@ template <class Tuple,
 struct make_tuple_types {
     static_assert(Stop >= Start, "make_tuple_types: invalid start index");
 
-    using type = typename detail::make_tuple_types<
+    using type = typename detail::make_tuple_types_impl<
         tuple_types<>, Tuple, Start, Stop
     >::type;
 };

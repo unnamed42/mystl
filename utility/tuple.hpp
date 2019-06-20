@@ -8,7 +8,8 @@
 #include "utility/bits/tuple_size.hpp"
 #include "utility/bits/tuple_types.hpp"
 #include "utility/bits/tuple_element.hpp"
-#include "utility/bits/detail/tuple.hpp"
+#include "utility/bits/make_tuple.hpp"
+#include "utility/bits/detail/tuple_impl.hpp"
 #include "utility/bits/detail/tuple_traits.hpp"
 #include "utility/bits/detail/tuple_relational.hpp"
 
@@ -16,18 +17,20 @@ namespace stl {
 
 template <class ...Ts>
 class tuple {
-    detail::tuple<make_index_sequence_t<sizeof...(Ts)>, Ts...> impl;
+    detail::tuple_impl<make_index_sequence_t<sizeof...(Ts)>, Ts...> impl;
 
     template <size_t I, class ...T>
-    friend tuple_element_t<I, tuple<T...>>& get(tuple<T...>&);
+    friend constexpr tuple_element_t<I, tuple<T...>>& get(tuple<T...>&);
 
     template <size_t I, class ...T>
-    friend tuple_element_t<I, tuple<T...>>&& get(tuple<T...>&&);
+    friend constexpr tuple_element_t<I, tuple<T...>>&& get(tuple<T...>&&);
 
     template <size_t I, class ...T>
-    friend const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...>&);
+    friend constexpr const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...>&);
 public:
-    explicit tuple(const Ts& ...ts)
+    constexpr tuple() : impl() {}
+
+    explicit constexpr tuple(const Ts& ...ts)
         : impl(make_index_sequence_t<sizeof...(Ts)>{},
                make_tuple_types_t<tuple, sizeof...(Ts)>{},
                make_index_sequence_t<0>{},
@@ -39,7 +42,7 @@ public:
                   make_tuple_types_t<tuple<Us...>>,
                   make_tuple_types_t<tuple, Larger ? sizeof...(Us) : sizeof...(Ts)>> >
              >
-    explicit tuple(Us&& ...us)
+    explicit constexpr tuple(Us&& ...us)
         : impl(make_index_sequence_t<sizeof...(Us)>{},
                make_tuple_types_t<tuple, sizeof...(Ts)>{},
                make_index_sequence_t<sizeof...(Ts), sizeof...(Us)>{},
@@ -49,54 +52,54 @@ public:
     template <class Tuple, class = enable_if_t<
         detail::tuple_convertible_v<Tuple, tuple>
     >>
-    tuple(Tuple &&t) : impl(forward<Tuple>(t)) {}
+    constexpr tuple(Tuple &&t) : impl(forward<Tuple>(t)) {}
 
     template <class Tuple, class = enable_if_t<
         detail::tuple_assignable_v<tuple, Tuple>
     >>
-    tuple& operator=(tuple &&t) {
+    constexpr tuple& operator=(tuple &&t) {
         impl = forward<Tuple>(t);
         return *this;
     }
 
-    void swap(tuple &t) {
+    constexpr void swap(tuple &t) {
         impl.swap(t.impl);
     }
 };
 
 template <> class tuple<> {
 public:
-    tuple() = default;
+    constexpr tuple() = default;
 
     template <class Tuple, class = enable_if_t<
         detail::tuple_convertible_v<Tuple, tuple>
     >>
-    tuple(Tuple&&) {}
+    constexpr tuple(Tuple&&) {}
 
     template <class Tuple, class = enable_if_t<
         detail::tuple_assignable_v<tuple, Tuple>
     >>
-    tuple& operator=(Tuple &&) { return *this; }
+    constexpr tuple& operator=(Tuple &&) { return *this; }
 
-    void swap(tuple&) {}
+    constexpr void swap(tuple&) {}
 };
 
 // get
 
 template <size_t I, class ...Ts>
-inline tuple_element_t<I, tuple<Ts...>>& get(tuple<Ts...> &t) {
+inline constexpr tuple_element_t<I, tuple<Ts...>>& get(tuple<Ts...> &t) {
     using type = tuple_element_t<I, tuple<Ts...>>;
     return static_cast<detail::tuple_leaf<I, type>&>(t.impl).get();
 }
 
 template <size_t I, class ...Ts>
-inline tuple_element_t<I, tuple<Ts...>>&& get(tuple<Ts...> &&t) {
+inline constexpr tuple_element_t<I, tuple<Ts...>>&& get(tuple<Ts...> &&t) {
     using type = tuple_element_t<I, tuple<Ts...>>;
-    return move(static_cast<detail::tuple_leaf<I, type>&>(t.impl).get());
+    return static_cast<type&&>(static_cast<detail::tuple_leaf<I, type>&>(t.impl).get());
 }
 
 template <size_t I, class ...Ts>
-inline const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...> &t) {
+inline constexpr const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...> &t) {
     using type = tuple_element_t<I, tuple<Ts...>>;
     return static_cast<const detail::tuple_leaf<I, type>&>(t.impl).get();
 }
@@ -104,32 +107,32 @@ inline const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...> &t) {
 // comparators
 
 template <class ...Ts, class ...Us>
-inline bool operator==(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
+inline constexpr bool operator==(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
     return detail::tuple_equal<sizeof...(Ts)>{}(lhs, rhs);
 }
 
 template <class ...Ts, class ...Us>
-inline bool operator!=(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
+inline constexpr bool operator!=(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
     return !(lhs == rhs);
 }
 
 template <class ...Ts, class ...Us>
-inline bool operator<(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
+inline constexpr bool operator<(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
     return detail::tuple_less<sizeof...(Ts)>{}(lhs, rhs);
 }
 
 template <class ...Ts, class ...Us>
-inline bool operator>(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
+inline constexpr bool operator>(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
     return rhs < lhs;
 }
 
 template <class ...Ts, class ...Us>
-inline bool operator<=(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
+inline constexpr bool operator<=(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
     return !(lhs > rhs);
 }
 
 template <class ...Ts, class ...Us>
-inline bool operator>=(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
+inline constexpr bool operator>=(const tuple<Ts...> &lhs, const tuple<Us...> &rhs) {
     return !(lhs < rhs);
 }
 

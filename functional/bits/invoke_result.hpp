@@ -1,5 +1,5 @@
-#ifndef FUNCTIONAL_INVOKE_RESULT
-#define FUNCTIONAL_INVOKE_RESULT
+#ifndef FUNCTIONAL_BITS_INVOKE_RESULT
+#define FUNCTIONAL_BITS_INVOKE_RESULT
 
 #include "meta/bits/decay.hpp"
 #include "meta/bits/declval.hpp"
@@ -16,7 +16,7 @@ namespace detail {
 
     // normal functions
     template <class T>
-    struct invoke_impl {
+    struct invoke_result_h {
         template <class F, class ...Args>
         static auto call(F &&f, Args&& ...args)
             -> decltype(forward<F>(f)(forward<Args>(args)...));
@@ -24,7 +24,7 @@ namespace detail {
 
     // member pointers(function pointer, member object pointer)
     template <class Class, class F>
-    struct invoke_impl<F Class::*> {
+    struct invoke_result_h<F Class::*> {
         template <class T, class Td = decay_t<T>,
             class = enable_if_t<is_base_of_v<Class, Td>>
         >
@@ -45,22 +45,22 @@ namespace detail {
             class = enable_if_t<is_function_v<F>>
         >
         static auto call(F2 Class::*pf, T &&t, Args&& ...args)
-            -> decltype((invoke_impl::get(forward<T>(t)).*pf)(forward<Args>(args)...));
+            -> decltype((invoke_result_h::get(forward<T>(t)).*pf)(forward<Args>(args)...));
 
         template <class T>
         static auto call(F Class::*pf, T &&t)
-            -> decltype(invoke_impl::get(forward<T>(t)).*pf);
+            -> decltype(invoke_result_h::get(forward<T>(t)).*pf);
     };
 
     template <class F, class ...Args, class Fd = decay_t<F>>
     auto call_result(F &&f, Args&& ...args)
-        -> decltype(invoke_impl<Fd>::call(forward<F>(f), forward<Args>(args)...));
+        -> decltype(invoke_result_h<Fd>::call(forward<F>(f), forward<Args>(args)...));
 
     template <class Void, class, class...>
-    struct invoke_result {};
+    struct invoke_result_impl {};
 
     template <class F, class ...Args>
-    struct invoke_result<
+    struct invoke_result_impl<
         decltype(void(call_result(declval<F>(), declval<Args>()...))),
         F, Args...
     > {
@@ -71,11 +71,11 @@ namespace detail {
 
 template <class F, class ...Args>
 struct invoke_result
-    : detail::invoke_result<void, F, Args...> {};
+    : detail::invoke_result_impl<void, F, Args...> {};
 
 template <class F, class ...Args>
 using invoke_result_t = typename invoke_result<F, Args...>::type;
 
 } // namespace stl
 
-#endif // FUNCTIONAL_INVOKE_RESULT
+#endif // FUNCTIONAL_BITS_INVOKE_RESULT

@@ -10,17 +10,17 @@ template <class...> class tuple;
 
 namespace detail {
 
-    template <class T> struct tuple_like : false_type {};
+    template <class T> struct tuple_like_impl : false_type {};
 
     template <class ...Ts>
-    struct tuple_like<tuple<Ts...>> : true_type {};
+    struct tuple_like_impl<tuple<Ts...>> : true_type {};
 
     // TODO: specializations for array, pair, std equivalences
 
 } // namespace detail
 
 template <class T>
-struct tuple_like : detail::tuple_like<remove_cv_t<T>> {};
+struct tuple_like : detail::tuple_like_impl<remove_cv_t<T>> {};
 
 template <class T>
 constexpr inline bool tuple_like_v = tuple_like<T>::value;
