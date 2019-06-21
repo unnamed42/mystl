@@ -17,7 +17,7 @@ namespace stl { namespace detail {
 
 template <size_t Idx, class ValueType,
           bool Empty = __is_empty(ValueType) && !__is_final(ValueType)>
-class tuple_leaf;
+struct tuple_leaf;
 
 template <size_t I, class V, bool E>
 inline constexpr void swap(tuple_leaf<I, V, E> &lhs, tuple_leaf<I, V, E> &rhs) {
@@ -25,9 +25,9 @@ inline constexpr void swap(tuple_leaf<I, V, E> &lhs, tuple_leaf<I, V, E> &rhs) {
 }
 
 template <size_t I, class V, bool E>
-class tuple_leaf {
+struct tuple_leaf {
     V value;
-public:
+
     constexpr tuple_leaf() : value() {
         static_assert(!is_reference_v<V>,
             "Attempt to default construct a reference element in tuple");
@@ -81,8 +81,7 @@ public:
 
 // special case for empty member
 template <size_t I, class V>
-class tuple_leaf<I, V, true> : private V {
-public:
+struct tuple_leaf<I, V, true> : private V {
     constexpr tuple_leaf() = default;
 
     constexpr tuple_leaf(const tuple_leaf &t) : V(t.get()) {

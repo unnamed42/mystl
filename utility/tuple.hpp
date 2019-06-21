@@ -1,32 +1,39 @@
 #ifndef UTILITY_TUPLE
 #define UTILITY_TUPLE
 
+#include "meta/bits/is_same.hpp"
 #include "meta/bits/enable_if.hpp"
+#include "meta/bits/copy_cvref.hpp"
+#include "meta/bits/remove_cvref.hpp"
 #include "meta/bits/index_sequence.hpp"
+#include "meta/bits/is_instance_of.hpp"
+#include "meta/bits/nth_element.hpp"
 
 #include "utility/bits/forward.hpp"
+#include "utility/bits/forward_like.hpp"
 #include "utility/bits/tuple_size.hpp"
 #include "utility/bits/tuple_types.hpp"
 #include "utility/bits/tuple_element.hpp"
 #include "utility/bits/make_tuple.hpp"
+#include "utility/bits/get_fwd.hpp"
 #include "utility/bits/detail/tuple_impl.hpp"
 #include "utility/bits/detail/tuple_traits.hpp"
 #include "utility/bits/detail/tuple_relational.hpp"
 
 namespace stl {
 
+template <class, class> class pair;
+
 template <class ...Ts>
 class tuple {
-    detail::tuple_impl<make_index_sequence_t<sizeof...(Ts)>, Ts...> impl;
+    friend struct detail::get_impl<tuple<Ts...>>;
 
-    template <size_t I, class ...T>
-    friend constexpr tuple_element_t<I, tuple<T...>>& get(tuple<T...>&);
-
-    template <size_t I, class ...T>
-    friend constexpr tuple_element_t<I, tuple<T...>>&& get(tuple<T...>&&);
-
-    template <size_t I, class ...T>
-    friend constexpr const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...>&);
+    using impl_t = detail::tuple_impl<make_index_sequence_t<sizeof...(Ts)>, Ts...>;
+private:
+    impl_t impl;
+private:
+    constexpr       impl_t& data()       noexcept { return impl; }
+    constexpr const impl_t& data() const noexcept { return impl; }
 public:
     constexpr tuple() : impl() {}
 
@@ -84,24 +91,31 @@ public:
     constexpr void swap(tuple&) {}
 };
 
-// get
+template <class ...Ts>
+tuple(Ts...) -> tuple<Ts...>;
 
-template <size_t I, class ...Ts>
-inline constexpr tuple_element_t<I, tuple<Ts...>>& get(tuple<Ts...> &t) {
-    using type = tuple_element_t<I, tuple<Ts...>>;
-    return static_cast<detail::tuple_leaf<I, type>&>(t.impl).get();
-}
+template <class T, class U>
+tuple(pair<T, U>) -> tuple<T, U>;
 
-template <size_t I, class ...Ts>
-inline constexpr tuple_element_t<I, tuple<Ts...>>&& get(tuple<Ts...> &&t) {
-    using type = tuple_element_t<I, tuple<Ts...>>;
-    return static_cast<type&&>(static_cast<detail::tuple_leaf<I, type>&>(t.impl).get());
-}
+// get for tuple<Ts...>
 
-template <size_t I, class ...Ts>
-inline constexpr const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...> &t) {
-    using type = tuple_element_t<I, tuple<Ts...>>;
-    return static_cast<const detail::tuple_leaf<I, type>&>(t.impl).get();
+namespace detail {
+
+    template <class ...Ts>
+    struct get_impl<tuple<Ts...>> {
+        template <size_t I, class Tuple, class = enable_if_t<
+            is_same_v<remove_cvref_t<Tuple>, tuple<Ts...>>>
+        >
+        static constexpr decltype(auto) get(Tuple &&t) {
+            using tuple_t = remove_reference_t<Tuple>;
+            using types_t = typename get_tuple_types<tuple_t>::type;
+            using elem_t = typename nth_element<I, types_t>::type;
+            using leaf_t = copy_cv_t<tuple_leaf<I, elem_t>, tuple_t>;
+
+            return forward_like<Tuple>(static_cast<leaf_t&>(t.impl).get());
+        }
+    };
+
 }
 
 // comparators

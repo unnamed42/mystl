@@ -29,6 +29,11 @@ constexpr auto make_tuple(Ts&& ...ts) {
     return tuple<detail::special_decay_t<Ts>...>(forward<Ts>(ts)...);
 }
 
+template <class ...Ts>
+constexpr tuple<Ts&&...> forward_as_tuple(Ts&& ...ts) noexcept {
+    return tuple<Ts&&...>(forward<Ts>(ts)...);
+}
+
 } // namespace stl
 
 #endif // UTILITY_BITS_MAKE_TUPLE

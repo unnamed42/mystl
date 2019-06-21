@@ -10,6 +10,9 @@
 namespace stl {
 
 template <class...> class tuple;
+template <class, class> class pair;
+template <class, size_t> class array;
+
 template <class...> struct tuple_types;
 
 namespace detail {
@@ -24,6 +27,14 @@ namespace detail {
     template <class ...Ts>
     struct tuple_size_impl<tuple<Ts...>>
         : constant<size_t, sizeof...(Ts)> {};
+
+    template <class T, class U>
+    struct tuple_size_impl<pair<T, U>>
+        : constant<size_t, 2> {};
+
+    template <class T, size_t N>
+    struct tuple_size_impl<array<T, N>>
+        : constant<size_t, N> {};
 
 } // namespace detail
 

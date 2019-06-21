@@ -3,7 +3,7 @@
 
 #include "utility/bits/forward.hpp"
 
-#include "container/access.hpp"
+#include "container/bits/access.hpp"
 
 namespace stl {
 
@@ -15,7 +15,7 @@ constexpr OutputIt copy(InputIt first, SentinelIt last, OutputIt out) {
 }
 
 template <class Container, class OutputIt>
-constexpr OutputIt copy(Container &&cont, OutputIt out) {
+constexpr OutputIt copy(Container &cont, OutputIt out) {
     return copy(begin(cont), end(cont), out);
 }
 
@@ -30,7 +30,7 @@ constexpr OutputIt copy_if(InputIt first, SentinelIt last, OutputIt out, Predica
 }
 
 template <class Container, class OutputIt, class Predicate>
-constexpr OutputIt copy_if(Container &&cont, OutputIt out, Predicate &&pred) {
+constexpr OutputIt copy_if(Container &cont, OutputIt out, Predicate &&pred) {
     return copy_if(begin(cont), end(cont), out, forward<Predicate>(pred));
 }
 

@@ -1,20 +1,25 @@
 #ifndef UTILITY_BITS_GET_FWD
 #define UTILITY_BITS_GET_FWD
 
-#include "utility/bits/tuple_element.hpp"
+#include "def.hpp"
+
+#include "meta/bits/remove_cvref.hpp"
+
+#include "utility/bits/forward.hpp"
 
 namespace stl {
 
-template <class...> class tuple;
+namespace detail {
 
-template <size_t I, class ...Ts>
-inline constexpr tuple_element_t<I, tuple<Ts...>>& get(tuple<Ts...> &t);
+    template <class T> struct get_impl;
 
-template <size_t I, class ...Ts>
-inline constexpr tuple_element_t<I, tuple<Ts...>>&& get(tuple<Ts...> &&t);
+} // namespace detail
 
-template <size_t I, class ...Ts>
-inline constexpr const tuple_element_t<I, tuple<Ts...>>& get(const tuple<Ts...> &t);
+template <size_t I, class Tuple>
+inline constexpr decltype(auto) get(Tuple &&t) {
+    return detail::get_impl<remove_cvref_t<Tuple>>
+                 ::template get<I>(forward<Tuple>(t));
+}
 
 } // namespace stl
 

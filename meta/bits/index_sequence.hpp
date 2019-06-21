@@ -3,15 +3,17 @@
 
 #include "def.hpp"
 
+#include "meta/bits/sequence.hpp"
 #include "meta/bits/identity.hpp"
 
 namespace stl {
 
-// log(N) complexity solution from https://stackoverflow.com/a/17426611
-
-template <size_t...> struct index_sequence {};
+template <size_t ...Idx>
+using index_sequence = sequence<size_t, Idx...>;
 
 namespace detail {
+
+    // log(N) complexity generation solution from https://stackoverflow.com/a/17426611
 
     template <class A, class B> struct numbers_concat;
 

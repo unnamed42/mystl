@@ -8,6 +8,7 @@
 #include "meta/bits/is_const.hpp"
 #include "meta/bits/is_constructible.hpp"
 #include "meta/bits/is_convertible.hpp"
+#include "meta/bits/is_copy_assignable.hpp"
 #include "meta/bits/is_detected.hpp"
 #include "meta/bits/is_function.hpp"
 #include "meta/bits/is_instance_of.hpp"

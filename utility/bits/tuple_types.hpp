@@ -5,6 +5,7 @@
 
 #include "meta/bits/identity.hpp"
 #include "meta/bits/remove_reference.hpp"
+#include "meta/bits/remove_cv.hpp"
 #include "meta/bits/is_reference.hpp"
 #include "meta/bits/condition.hpp"
 
@@ -13,9 +14,18 @@
 
 namespace stl {
 
+template <class...> class tuple;
+
 template <class...> struct tuple_types {};
 
 namespace detail {
+
+    template <class Tuple>
+    struct get_tuple_types_impl;
+
+    template <class ...Ts>
+    struct get_tuple_types_impl<tuple<Ts...>>
+        : identity<tuple_types<Ts...>> {};
 
     template <class TupleTypes, class Tuple, size_t Start, size_t Stop>
     struct make_tuple_types_impl;
@@ -35,6 +45,12 @@ namespace detail {
         : identity<tuple_types<Ts...>> {};
 
 } // namespace detail
+
+template <class Tuple>
+struct get_tuple_types
+    : detail::get_tuple_types_impl<remove_cv_t<Tuple>> {};
+
+// make_tuple_types
 
 template <class Tuple,
           size_t Stop = tuple_size_v<remove_reference_t<Tuple>>,

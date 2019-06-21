@@ -9,7 +9,7 @@
 namespace stl {
 
 template <class T1, class T2>
-struct pair {
+class pair {
 private:
     using self = pair<T1, T2>;
 public:

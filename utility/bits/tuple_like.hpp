@@ -7,6 +7,8 @@
 namespace stl {
 
 template <class...> class tuple;
+template <class, size_t> class array;
+template <class, class> class pair;
 
 namespace detail {
 
@@ -15,7 +17,11 @@ namespace detail {
     template <class ...Ts>
     struct tuple_like_impl<tuple<Ts...>> : true_type {};
 
-    // TODO: specializations for array, pair, std equivalences
+    template <class T, class U>
+    struct tuple_like_impl<pair<T, U>> : true_type {};
+
+    template <class T, size_t N>
+    struct tuple_like_impl<array<T, N>> : true_type {};
 
 } // namespace detail
 
