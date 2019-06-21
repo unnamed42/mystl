@@ -1,16 +1,16 @@
 #ifndef FUNCTIONAL_BITS_PARTIAL
 #define FUNCTIONAL_BITS_PARTIAL
 
-#include "meta/bits/is_invocable.hpp"
 #include "meta/bits/remove_reference.hpp"
-#include "meta/bits/index_sequence.hpp"
+#include "meta/bits/is_invocable.hpp"
 
 #include "utility/tuple.hpp"
 #include "utility/bits/forward.hpp"
+#include "utility/bits/forward_like.hpp"
 
 #include "functional/bits/invoke.hpp"
 #include "functional/bits/invoke_result.hpp"
-#include "functional/bits/detail/forward_like.hpp"
+#include "functional/bits/multi_apply.hpp"
 
 #define STL_FWD(arg)       stl::forward<decltype(arg)>(arg)
 #define STL_GET(arg)       stl::get<0>(STL_FWD(arg))
@@ -28,22 +28,9 @@ namespace detail {
     template <class T>
     using tuple_index_t = typename tuple_index<T>::type;
 
-    template <class F, class Tuple1, class Tuple2, size_t ...I1, size_t ...I2>
-    constexpr decltype(auto) apply2_impl(F &&f, Tuple1 &&t1, index_sequence<I1...>,
-                                                Tuple2 &&t2, index_sequence<I2...>) {
-        return invoke(forward<F>(f), get<I1>(forward<Tuple1>(t1))...,
-                                     get<I2>(forward<Tuple2>(t2))...);
-    }
-
-    template <class F, class Tuple1, class Tuple2>
-    constexpr decltype(auto) apply2(F &&f, Tuple1 &&t1, Tuple2 &&t2) {
-        return apply2_impl(forward<F>(f), forward<Tuple1>(t1), tuple_index_t<Tuple1>{},
-                                          forward<Tuple2>(t2), tuple_index_t<Tuple2>{});
-    }
-
     template <class F, class T1, class T2>
     constexpr decltype(auto) apply_capture2(F &&f, T1 &&t1, T2 &&t2) {
-        return apply2([&xf=f](auto&& ...args) mutable -> decltype(auto) {
+        return multi_apply([&xf=f](auto&& ...args) mutable -> decltype(auto) {
             return invoke(forward_like<F>(xf), STL_GET(args)...);
         }, forward<T1>(t1), forward<T2>(t2));
     }
@@ -76,7 +63,7 @@ constexpr decltype(auto) partial(F &&f) {
             -> invoke_result_t<F, decltype(p)..., decltype(xs)...> {
             return detail::apply_capture2([&yf](auto&& ...ys) constexpr
                 -> invoke_result_t<F, decltype(ys)...> {
-                return invoke(detail::forward_like<F>(STL_GET(yf)), STL_FWD(ys)...);
+                return invoke(forward_like<F>(STL_GET(yf)), STL_FWD(ys)...);
             }, pack, STL_FWD_PACK(xs));
         });
     };

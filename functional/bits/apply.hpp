@@ -5,7 +5,7 @@
 
 #include "utility/bits/forward.hpp"
 #include "utility/bits/get_fwd.hpp"
-#include "utility/bits/detail/tuple_index.hpp"
+#include "utility/bits/tuple_index.hpp"
 
 #include "functional/bits/invoke.hpp"
 
@@ -23,7 +23,7 @@ namespace detail {
 template <class F, class Tuple>
 constexpr decltype(auto) apply(F &&f, Tuple &&tuple) {
     return detail::apply_impl(forward<F>(f), forward<Tuple>(tuple),
-                              detail::tuple_index_t<Tuple>{});
+                              tuple_index_t<Tuple>{});
 }
 
 } // namespace stl
