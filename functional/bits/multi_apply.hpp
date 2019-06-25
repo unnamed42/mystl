@@ -8,7 +8,6 @@
 #include "meta/bits/sequence.hpp"
 #include "meta/bits/concat.hpp"
 #include "meta/bits/remove_reference.hpp"
-#include "meta/bits/types_filter.hpp"
 
 #include "utility/tuple.hpp"
 #include "utility/bits/tuple_index.hpp"
@@ -22,64 +21,41 @@ namespace stl {
 
 namespace detail {
 
-    // the argument is the M-th element of the N-th tuple
-    template <size_t N, size_t M> struct tuple_argument {};
+    template <size_t N, size_t E> struct argument_indices {
+        static constexpr auto N = N;
+        static constexpr auto E = E;
+    };
 
-    // convert tuple type to a sequence of (N, M) tuple_argument types
+    template <size_t, class, class> struct tuple_to_argument {};
 
-    template <size_t Curr, class Tuple>
-    struct tuple_to_indices
-        : tuple_to_indices<Curr, tuple_index_t<remove_reference_t<Tuple>>> {};
+    template <size_t C, size_t ...Idx, class Tuple>
+    struct tuple_to_argument<C, index_sequence<Idx...>, Tuple>
+        : types<argument_indices<C, Idx>...> {};
 
-    template <size_t Curr, size_t ...Idx>
-    struct tuple_to_indices<Curr, index_sequence<Idx...>>
-        : identity<types<tuple_argument<Curr, Idx>...>> {};
+    template <class Idx, class TofTuples>
+    struct fuck1 {};
 
-    // remove empty tuples
+    template <size_t ...Idx, class ...Tuples>
+    struct fuck1<index_sequence<Idx...>, types<Tuples...>>
+        : types<condition_t<>...> {};
 
-    template <size_t C, class, class> struct valid_tuples;
+    template <class ...Tuples>
+    struct make_tuples_indices {};
 
-    template <size_t C, class ...Indices, class T, class ...Tuples>
-    struct valid_tuples<C, types<Indices...>, types<T, Tuples...>>
-        : condition_t<tuple_size_v<T> != 0,
-                      valid_tuples<C + 1, types<Indices..., tuple_to_indices<C, T>>, types<Tuples...>>,
-                      valid_tuples<C + 1, types<ValidTuples...>                    , types<Tuples...>>
-        > {};
-
-    template <size_t C, class ...Indices>
-    struct valid_tuples<C, types<Indices...>, types<>>
-        : types<Indices...> {};
-
-    // expand tuple indices to tuple_argument
-
-    template <class> struct expand_indices;
-
-    template <class Indices...>
-    struct expand_indices
-
-
+    // TODO: implement indices with template meta programming
     template <size_t S, class ...Ts>
     constexpr auto make_indices() {
         constexpr size_t sizes[] = {
             tuple_size_v<remove_reference_t<Ts>>...
         };
-
-        array<pair<size_t, size_t>, S> ret;
-
-        auto tup = ret.begin();
-        for(size_t i=0; i<sizeof...(Ts); ++i) {
-            for(size_t j=0; j<sizes[i]; ++j) {
+        constexpr array<pair<size_t, size_t>, S> ret;
+        constexpr auto tup = ret.begin();
+        for(constexpr size_t i=0; i<sizeof...(Ts); ++i) {
+            if(sizes[0] == 0)
+                continue;
+            for(constexpr size_t j=0; j<sizes[i]; ++j) {
                 tup->first = i;
                 tup->second = j;
-            }
-        }
-
-        using arr_t = array<size_t, S>;
-        pair<arr_t, arr_t> ret{};
-        for(size_t c = 0, i = 0; i<sizeof...(Ts); ++i) {
-            for(size_t j=0; j<sizes[i]; ++j, ++c) {
-                ret.first[c] = i;
-                ret.second[c] = j;
             }
         }
         return ret;
