@@ -17,12 +17,12 @@ template <template <class...> class Binary, class TupleTypes1, class TupleTypes2
 struct tuples_foreach_impl : false_type {};
 
 template <template <class...> class Binary>
-struct tuples_foreach_impl< Binary, tuple_types<>, tuple_types<> > : true_type {};
+struct tuples_foreach_impl< Binary, types<>, types<> > : true_type {};
 
 template <template <class...> class Binary,
           class T, class ...Ts, class U, class ...Us>
-struct tuples_foreach_impl< Binary, tuple_types<T, Ts...>, tuple_types<U, Us...> >
-    : and_< Binary<T, U>, tuples_foreach_impl<Binary, tuple_types<Ts...>, tuple_types<Us...>> > {};
+struct tuples_foreach_impl< Binary, types<T, Ts...>, types<U, Us...> >
+    : and_< Binary<T, U>, tuples_foreach_impl<Binary, types<Ts...>, types<Us...>> > {};
 
 template <template <class...> class Binary,
           class Tuple1, class Tuple2,

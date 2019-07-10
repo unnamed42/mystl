@@ -4,8 +4,8 @@
 #include "def.hpp"
 
 #include "meta/bits/identity.hpp"
-#include "meta/bits/remove_reference.hpp"
-#include "meta/bits/remove_cv.hpp"
+#include "meta/bits/sequence.hpp"
+#include "meta/bits/remove_cvref.hpp"
 #include "meta/bits/is_reference.hpp"
 #include "meta/bits/condition.hpp"
 
@@ -16,8 +16,6 @@ namespace stl {
 
 template <class...> class tuple;
 
-template <class...> struct tuple_types {};
-
 namespace detail {
 
     template <class Tuple>
@@ -25,30 +23,30 @@ namespace detail {
 
     template <class ...Ts>
     struct get_tuple_types_impl<tuple<Ts...>>
-        : identity<tuple_types<Ts...>> {};
+        : identity<types<Ts...>> {};
 
     template <class TupleTypes, class Tuple, size_t Start, size_t Stop>
     struct make_tuple_types_impl;
 
     template <class ...Ts, class Tuple, size_t Start, size_t Stop>
-    struct make_tuple_types_impl<tuple_types<Ts...>, Tuple, Start, Stop>
+    struct make_tuple_types_impl<types<Ts...>, Tuple, Start, Stop>
         : make_tuple_types_impl<
-              tuple_types<Ts..., condition_t<is_lvalue_reference_v<Tuple>,
-                            // maintain reference-ness
-                            tuple_element_t<Start, remove_reference_t<Tuple>>&,
-                            tuple_element_t<Start, remove_reference_t<Tuple>> >
-                         >,
+              types<Ts..., condition_t<is_lvalue_reference_v<Tuple>,
+                    // maintain reference-ness
+                    tuple_element_t<Start, remove_reference_t<Tuple>>&,
+                    tuple_element_t<Start, remove_reference_t<Tuple>> >
+                   >,
               Tuple, Start + 1, Stop> {};
 
     template <class ...Ts, class Tuple, size_t Stop>
-    struct make_tuple_types_impl<tuple_types<Ts...>, Tuple, Stop, Stop>
-        : identity<tuple_types<Ts...>> {};
+    struct make_tuple_types_impl<types<Ts...>, Tuple, Stop, Stop>
+        : identity<types<Ts...>> {};
 
 } // namespace detail
 
 template <class Tuple>
 struct get_tuple_types
-    : detail::get_tuple_types_impl<remove_cv_t<Tuple>> {};
+    : detail::get_tuple_types_impl<remove_cvref_t<Tuple>> {};
 
 // make_tuple_types
 
@@ -59,7 +57,7 @@ struct make_tuple_types {
     static_assert(Stop >= Start, "make_tuple_types: invalid start index");
 
     using type = typename detail::make_tuple_types_impl<
-        tuple_types<>, Tuple, Start, Stop
+        types<>, Tuple, Start, Stop
     >::type;
 };
 

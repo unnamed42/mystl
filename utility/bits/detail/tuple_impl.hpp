@@ -24,8 +24,8 @@ struct tuple_impl<index_sequence<Idx...>, Ts...> : tuple_leaf<Idx, Ts>... {
 
     template <size_t ...Idx1, class ...Ts1,
               size_t ...Idx2, class ...Ts2, class ...Values>
-    explicit constexpr tuple_impl(index_sequence<Idx1...>, tuple_types<Ts1...>,
-                        index_sequence<Idx2...>, tuple_types<Ts2...>, Values&& ...values)
+    explicit constexpr tuple_impl(index_sequence<Idx1...>, types<Ts1...>,
+                        index_sequence<Idx2...>, types<Ts2...>, Values&& ...values)
         : tuple_leaf<Idx1, Ts1>(stl::forward<Values>(values))...,
           tuple_leaf<Idx2, Ts2>()... {}
 

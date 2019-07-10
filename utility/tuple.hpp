@@ -37,7 +37,7 @@ private:
 public:
     constexpr tuple() : impl() {}
 
-    explicit constexpr tuple(const Ts& ...ts)
+    constexpr tuple(const Ts& ...ts)
         : impl(make_index_sequence_t<sizeof...(Ts)>{},
                make_tuple_types_t<tuple, sizeof...(Ts)>{},
                make_index_sequence_t<0>{},
@@ -49,7 +49,7 @@ public:
                   make_tuple_types_t<tuple<Us...>>,
                   make_tuple_types_t<tuple, Larger ? sizeof...(Us) : sizeof...(Ts)>> >
              >
-    explicit constexpr tuple(Us&& ...us)
+    constexpr tuple(Us&& ...us)
         : impl(make_index_sequence_t<sizeof...(Us)>{},
                make_tuple_types_t<tuple, sizeof...(Ts)>{},
                make_index_sequence_t<sizeof...(Ts), sizeof...(Us)>{},
@@ -90,6 +90,9 @@ public:
 
     constexpr void swap(tuple&) {}
 };
+
+template <class T>
+tuple(T) -> tuple<T>;
 
 template <class ...Ts>
 tuple(Ts...) -> tuple<Ts...>;

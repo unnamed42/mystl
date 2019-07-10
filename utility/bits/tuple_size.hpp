@@ -13,7 +13,7 @@ template <class...> class tuple;
 template <class, class> class pair;
 template <class, size_t> class array;
 
-template <class...> struct tuple_types;
+template <class...> struct types;
 
 namespace detail {
 
@@ -21,7 +21,7 @@ namespace detail {
     struct tuple_size_impl {};
 
     template <class ...Ts>
-    struct tuple_size_impl<tuple_types<Ts...>>
+    struct tuple_size_impl<types<Ts...>>
         : constant<size_t, sizeof...(Ts)> {};
 
     template <class ...Ts>

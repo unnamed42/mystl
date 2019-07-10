@@ -4,6 +4,7 @@
 #include "def.hpp"
 
 #include "meta/bits/identity.hpp"
+#include "meta/bits/sequence.hpp"
 #include "meta/bits/nth_element.hpp"
 #include "meta/bits/copy_cv.hpp"
 #include "meta/bits/remove_cv.hpp"
@@ -14,8 +15,6 @@ template <class...> class tuple;
 template <class, class> class pair;
 template <class, size_t> class array;
 
-template <class...> struct tuple_types;
-
 namespace detail {
 
     template <size_t, class>
@@ -24,14 +23,14 @@ namespace detail {
     // specialization for tuple_types
 
     template <size_t I, class ...Ts>
-    struct tuple_element_impl<I, tuple_types<Ts...>>
-        : nth_element<I, tuple_types<Ts...>> {};
+    struct tuple_element_impl<I, types<Ts...>>
+        : nth_element<I, types<Ts...>> {};
 
     // specialization for tuple
 
     template <size_t I, class ...Ts>
     struct tuple_element_impl<I, tuple<Ts...>>
-        : tuple_element_impl<I, tuple_types<Ts...>> {};
+        : tuple_element_impl<I, types<Ts...>> {};
 
     // specialization for pair
 
