@@ -1,7 +1,6 @@
 backup/
 build/
-.ccls
-main.cpp
-CMakeLists.txt
-mystl.kdev4
+.ccls-cache/
+.vscode/
 .kdev4
+compile_commands.json
