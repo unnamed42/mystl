@@ -3,9 +3,9 @@
 
 #include "meta/cvref.hpp"
 #include "meta/base.hpp"
-#include "meta/logic.hpp"
+#include "meta/bits/logic.hpp"
 #include "meta/sfinae.hpp"
-#include "meta/is_function.hpp"
+#include "meta/bits/is_function.hpp"
 
 namespace stl {
 

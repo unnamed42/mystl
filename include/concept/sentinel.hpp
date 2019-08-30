@@ -1,7 +1,7 @@
 #ifndef CONCEPT_SENTINEL
 #define CONCEPT_SENTINEL
 
-#include "meta/logic.hpp"
+#include "meta/bits/logic.hpp"
 #include "concept/comparable.hpp"
 
 namespace stl {

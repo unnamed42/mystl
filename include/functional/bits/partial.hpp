@@ -10,7 +10,6 @@
 
 #include "functional/bits/invoke.hpp"
 #include "functional/bits/invoke_result.hpp"
-#include "functional/bits/multi_apply.hpp"
 
 #define STL_FWD(arg)       stl::forward<decltype(arg)>(arg)
 #define STL_GET(arg)       stl::get<0>(STL_FWD(arg))
@@ -30,7 +29,7 @@ namespace detail {
 
     template <class F, class T1, class T2>
     constexpr decltype(auto) apply_capture2(F &&f, T1 &&t1, T2 &&t2) {
-        return multi_apply([&xf=f](auto&& ...args) mutable -> decltype(auto) {
+        return apply2([&xf=f](auto&& ...args) mutable -> decltype(auto) {
             return invoke(forward_like<F>(xf), STL_GET(args)...);
         }, forward<T1>(t1), forward<T2>(t2));
     }

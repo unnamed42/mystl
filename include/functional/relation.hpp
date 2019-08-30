@@ -5,73 +5,28 @@
 
 namespace stl {
 
-namespace detail {
-    template <template <class> class Relation, class T>
-    struct not_ {
-        bool operator()(const T &lhs, const T &rhs) const {
-            return !Relation<T>{}(lhs, rhs);
-        }
-    };
-
-    template <template <class> class Relation>
-    struct not_<Relation, void> {
-        template <class T>
-        bool operator()(const T &lhs, const T &rhs) const {
-            return !Relation<T>{}(lhs, rhs);
-        }
-    };
-} // namespace detail
-
-template <class T = void>
-struct equal {
-    bool operator()(const T &lhs, const T &rhs) const {
-        return lhs == rhs;
+#define DEPLOY_OPERATOR(classname, op) \
+    template <class T = void> \
+    struct classname { \
+        constexpr bool operator()(const T &lhs, const T &rhs) const { \
+            return lhs op rhs; \
+        } \
+    }; \
+    template <> struct classname<void> { \
+        template <class T> \
+        constexpr bool operator()(const T &lhs, const T &rhs) const { \
+            return lhs op rhs; \
+        } \
     }
-};
 
-template <> struct equal<void> {
-    template <class T>
-    bool operator()(const T &lhs, const T &rhs) const {
-        return lhs == rhs;
-    }
-};
+DEPLOY_OPERATOR(eq, ==);
+DEPLOY_OPERATOR(ne, !=);
+DEPLOY_OPERATOR(lt, <);
+DEPLOY_OPERATOR(gt, >);
+DEPLOY_OPERATOR(le, <=);
+DEPLOY_OPERATOR(ge, >=);
 
-template <class T = void>
-struct less {
-    bool operator()(const T &lhs, const T &rhs) const {
-        return lhs < rhs;
-    }
-};
-
-template <> struct less<void> {
-    template <class T>
-    bool operator()(const T &lhs, const T &rhs) const {
-        return lhs < rhs;
-    }
-};
-
-template <class T = void>
-struct greater {
-    bool operator()(const T &lhs, const T &rhs) const {
-        return lhs > rhs;
-    }
-};
-
-template <> struct greater<void> {
-    template <class T>
-    bool operator()(const T &lhs, const T &rhs) const {
-        return lhs > rhs;
-    }
-};
-
-template <class T = void>
-using not_equal = detail::not_<equal, T>;
-
-template <class T = void>
-using less_equal = detail::not_<greater, T>;
-
-template <class T = void>
-using greater_equal = detail::not_<less, T>;
+#undef DEPLOY_OPERATOR
 
 } // namespace stl
 

@@ -2,7 +2,7 @@
 #define CONCEPT_COMPARABLE
 
 #include "meta/sfinae.hpp"
-#include "utility/declval.hpp"
+#include "meta/bits/declval.hpp"
 
 namespace stl {
 

@@ -45,7 +45,7 @@ constexpr InputIt find_not(InputIt first, SentinelIt last, const T &val) {
 }
 
 template <class Container, class T>
-constexpr InputIt find_not(Container &&cont, const T &val) {
+constexpr auto find_not(Container &&cont, const T &val) {
     return find_not(begin(cont), end(cont), val);
 }
 

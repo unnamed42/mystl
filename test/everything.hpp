@@ -19,7 +19,6 @@
 #include "functional/bits/apply.hpp"
 #include "functional/bits/invoke.hpp"
 #include "functional/bits/invoke_result.hpp"
-#include "functional/bits/multi_apply.hpp"
 #include "functional/bits/partial.hpp"
 #include "functional/logic.hpp"
 #include "functional/placeholder.hpp"
